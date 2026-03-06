@@ -1,0 +1,85 @@
+/* =========================================================
+   poster-print.css — PRINT (A0/A1)
+   Does NOT affect screen rendering.
+   Relies on template CSS variables:
+   --poster-page-width, --poster-page-height
+   ========================================================= */
+ /* 1) Page size + no margins (poster needs edge-to-edge) */
+@page {
+    size: A0 landscape;
+    margin: 0;
+}
+
+@media print {
+
+ 
+
+  html, body{
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* 2) Remove Quarto page layout wrappers (again, print-safe) */
+  body.poster-html #quarto-content,
+  body.poster-html #quarto-document-content{
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+  }
+
+  /* 3) Make poster exactly one physical page */
+  body.poster-html .poster__wrap{
+    margin: 0 !important;
+    padding: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    
+  }
+
+    body.poster-html .poster__grid{
+    overflow: hidden;
+  }
+
+  /* 4) Grid fills the page */
+  body.poster-html .poster__grid{
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  /* 5) No internal scrolling in print */
+  body.poster-html .poster-left,
+  body.poster-html .poster-center,
+  body.poster-html .poster-right{
+    overflow: visible !important;
+  }
+  body.poster-html .poster-left .poster-flow,
+  body.poster-html .poster-right .poster-flow{
+    max-width: none !important;
+}
+
+  /* 6) Print color fidelity */
+  *{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 7) Avoid awkward breaks inside key blocks */
+  .poster-center,
+  .poster-meta,
+  .poster-key,
+  .poster-branding,
+  figure, table, pre{
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 8) Links: keep readable */
+  a{
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}

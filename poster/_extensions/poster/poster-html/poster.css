@@ -1,0 +1,437 @@
+
+/* =========================================================
+   poster.css — SCREEN (Betterland v1 aligned)
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
+:root{
+  --poster-primary: #0b4545;
+  --poster-secondary: #008080;
+
+  --poster-bg: #ffffff;
+  --poster-fg: #111111;
+
+  --poster-font-body: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --poster-font-display: ui-serif, Georgia, "Times New Roman", Times, serif;
+
+  --poster-gap: 1.5rem;
+  --poster-pad: 2rem;
+
+  --poster-canvas-max: 1800px;
+  /* spacing scales */
+  --s-1: clamp(0.5rem, 0.8vw, 0.9rem);
+  --s-2: clamp(0.8rem, 1.1vw, 1.3rem);
+  --s-3: clamp(1.2rem, 1.6vw, 2rem);
+
+  /* text scales */
+  --text: clamp(1rem, 0.9vw, 1.25rem);
+  --h2: clamp(1.25rem, 1.3vw, 1.8rem);
+
+  /* poster billboard (center) */
+  --billboard: clamp(2.2rem, 3.2vw, 4.2rem);
+  --billboard-sub: clamp(1.1rem, 1.4vw, 1.8rem);
+
+  /* max readable line length in side columns */
+  --measure: 52ch;
+}
+
+/* ===== Kill Quarto article layout for poster-html ===== */
+body.poster-html #quarto-content.page-columns{
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.poster-html #quarto-document-content.content{
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* remove the article "columns" grid that creates gutters */
+body.poster-html #quarto-content.page-columns > *{
+  grid-column: auto !important;
+}
+
+/* your poster should own the width */
+body.poster-html .poster__wrap{
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0.75rem 1rem !important; /* petites marges */
+}
+
+/* ---------- Base ---------- */
+html, body{
+  margin: 0;
+  padding: 0;
+  background: var(--poster-bg);
+  color: var(--poster-fg);
+  font-family: var(--poster-font-body);
+}
+
+.poster__wrap{
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;           
+  margin: 0;
+  padding: 0.75rem 1rem;     
+}
+
+
+
+/* =========================================================
+   3 COLUMN GRID (Betterland)
+   ========================================================= */
+
+.poster__grid{
+  display: grid;
+  grid-template-columns: 
+      minmax(320px, 1fr) 
+      minmax(520px, 1.8fr) 
+      minmax(320px, 1fr);
+  gap: var(--poster-gap);
+  align-items: stretch;
+  width: 100%;
+}
+
+.poster-left, .poster-center, .poster-right{
+  min-width: 0;
+  min-height: 0;
+}
+
+/* LEFT + RIGHT scientific columns */
+.poster-left,
+.poster-right{
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+}
+
+/* CENTER hero column */
+.poster-center{
+  background: linear-gradient(180deg, var(--poster-primary), var(--poster-secondary));
+  color: rgba(255,255,255,.95);
+  padding: var(--s-3);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--s-3);
+}
+
+/* =========================================================
+   METADATA (title block)
+   ========================================================= */
+
+.poster-meta{
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+.poster-meta__title{
+  font-family: var(--poster-font-display);
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0.5rem 0;
+  font-size: clamp(2rem, 2.8vw, 3.2rem);
+}
+
+.poster-meta__subtitle {
+  font-family: var(--poster-font-display);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 1.8vw, 2.4rem);
+}
+
+p:has(> .poster-meta__authors, .poster-meta__affiliations, .poster-meta__subtitle){
+  margin: 0;
+  padding: 0.4rem;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.poster-meta__authors{
+  display: grid;
+  font-weight: 500;
+  font-size: clamp(1rem, 1vw, 1rem);
+  margin: 0;
+}
+
+.poster-meta__coauthors{
+  display: inline-block;
+  margin: 0;
+  opacity: 0.85;
+  font-size: clamp(1.0rem, 1.05vw, 1.2rem);
+}
+
+.poster-meta__affiliations{
+  opacity: 0.7;
+  font-style: italic;
+  font-size: clamp(0.5rem, 0.2vw, 0.4rem);
+}
+
+.poster-meta__contacts-wrap{
+  margin-top: 0.25rem;
+}
+
+.poster-meta__contacts{
+  display: inline-block;
+  opacity: 0.75;
+  font-size: clamp(0.95rem, 0.95vw, 1.1rem);
+  line-height: 1.2;
+}
+
+.poster-meta__contacts a{
+  color: var(--poster-secondary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.poster-meta__contacts a:hover{
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   SCIENTIFIC FLOW
+   ========================================================= */
+
+.poster-flow{
+  font-size: var(--text);
+  line-height: 1.4;
+}
+
+.poster-flow h2{
+  font-family: var(--poster-font-display);
+  font-size: var(--h2);
+  margin: var(--s-3) 0 var(--s-1);
+  line-height: 1.15;
+}
+
+.poster-left .poster-flow,
+.poster-right .poster-flow{
+  max-width: var(--measure);
+}
+
+.poster-flow p{ margin: 0.6rem 0; }
+
+/* Images and figures */
+.poster-flow figure{
+  margin: var(--s-2) 0;
+}
+
+.poster-flow img{
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+}
+
+.poster-flow figcaption{
+  margin-top: 0.4rem;
+  opacity: 0.85;
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+/* Tables */
+.poster-flow table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--s-2) 0;
+  font-size: 0.95em;
+}
+
+.poster-flow td{
+  padding: 0.55rem 0.7rem;
+  vertical-align: top;
+}
+
+.poster-flow thead th{
+  text-align: left;
+  border-bottom: 2px solid rgba(0,0,0,.12);
+  padding: 0.6rem 0.7rem;
+}
+
+.poster-flow tbody tr:nth-child(odd){
+  background: rgba(0,0,0,.04);
+}
+
+/* Safety for narrow screens */
+.poster-flow table{
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/*references*/
+.poster-right #references{
+  margin-top: var(--s-3);
+  font-size: 0.9em;
+  line-height: 1.25;
+  opacity: 0.95;
+}
+
+.poster-right #references ul{
+  padding-left: 1.1em;
+  margin: var(--s-1) 0 0;
+}
+
+
+/* Code blocks */
+.poster-flow code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+  padding: 0.12em 0.35em;
+  border-radius: 0.4em;
+  background: rgba(0,128,128,.12);
+  color: var(--poster-secondary);
+}
+
+.poster-flow pre{
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--s-2);
+  border-radius: 0.8rem;
+  background: rgba(0,0,0,.04);
+  border: 1px solid rgba(0,0,0,.10);
+}
+
+/* =========================================================
+   KEY MESSAGE
+   ========================================================= */
+
+.poster-key{
+  display: grid;
+  align-content: center;
+}
+
+.poster-key p{
+  font-family: var(--poster-font-display);
+  font-weight: 800;
+  font-size: var(--billboard);
+  line-height: 1.05;
+  margin: 0;
+}
+.poster-key p + p{
+  font-size: var(--billboard-sub);
+  font-weight: 600;
+  opacity: 0.85;
+  margin-top: var(--s-2);
+}
+
+/* =========================================================
+   BRANDING (QR + logo)
+   ========================================================= */
+
+.poster-branding{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: var(--s-2);
+}
+
+.poster-branding img.qr{
+  width: clamp(120px, 12vw, 220px);
+  height: auto;
+}
+
+.poster-branding img.logo{
+  width: clamp(120px, 14vw, 260px);
+  height: auto;
+  justify-self: end;
+}
+
+.poster-branding img{
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px){
+  .poster__grid{
+    grid-template-columns: 1fr;
+  }
+
+  .poster-center{ order: 1; }
+  .poster-left{ order: 2; }
+  .poster-right{ order: 3; }
+}
+
+@media (max-width: 520px){
+  .poster-key p{
+    font-size: clamp(1.3rem, 5vw, 2rem);
+  }
+}
+
+/* =========================
+   MODE C — Hybrid
+   Poster View on large screens
+   ========================= */
+
+/* Large desktop: show poster as a single canvas that fits the viewport */
+@media (min-width: 1600px) and (min-height: 850px){
+
+  body.poster-html{
+    overflow: auto; /* no page scroll in poster-view */
+  }
+
+  .poster__wrap{
+    /* Fit within viewport with small margins */
+    height: calc(100vh - 2rem);
+    width: auto;
+
+    /* Keep print ratio (A0 landscape) */
+    aspect-ratio: 1189 / 841;
+
+    margin: 1rem auto;
+    padding: 0;
+
+    display: grid;
+    place-items: stretch;
+  }
+
+  .poster__grid{
+    height: 100%;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* In poster view, let columns scroll internally if needed (rare) */
+  .poster-left,
+  .poster-right{
+    overflow: auto;
+    min-height: 0;
+  }
+}
+
+
+
+
+/* ======================================
+   Poster centering on large screens
+   
+
+@media (min-width: 1200px){
+
+  body.poster-html{
+    display:flex;
+    justify-content:center;
+  }
+
+  .poster__wrap{
+    /*width: min(96vw, calc(96vh * 1189 / 841));*/
+    /*aspect-ratio: 1189 / 841; */
+  /*}
+
+  .poster__grid{
+  height:100%;
+}
+}
+
+
+

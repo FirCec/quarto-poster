@@ -1,0 +1,108 @@
+---
+title: "Poster MVP Test"
+subtitle: "Validation technique du format poster-html"
+author:
+  - name: Firmin C.
+    affil: 1
+    main: true
+    email: firmin@example.com
+    orcid: "0000-0000-0000-0000"
+    twitter: firmin_c
+    github: firminc
+    website: https://example.com
+  - name: Another Contributor
+    affil: [1,2]
+affiliation:
+  - num: 1
+    address: RPTU Kaiserslautern
+  - num: 2
+    address: Other Lab
+format:
+  poster-html:
+    orientation: landscape
+---
+
+## Introduction
+
+Du texte d’introduction.  
+Un peu plus de texte pour tester le flux.
+Du texte d’introduction.  
+Un peu plus de texte pour tester le flux.
+Du texte d’introduction.  
+Un peu plus de texte pour tester le flux.
+Du texte d’introduction.  
+Un peu plus de texte pour tester le flux.
+
+## Objectives
+
+- Objectif 1
+- Objectif 2
+- Objectif 3
+- Objectif 1
+- Objectif 2
+- Objectif 3
+- Objectif 1
+- Objectif 2
+- Objectif 3
+- Objectif 1
+- Objectif 2
+- Objectif 3
+
+## Methods
+
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+Description des méthodes utilisées.  
+Un peu plus de contenu ici pour remplir la colonne gauche.
+
+::: {.key-message}
+Make better posters with Quarto.
+
+Transition from poster to manuscript with ease!
+:::
+
+::: {.branding}
+![](../poster/_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
+![](https://via.placeholder.com/200){.logo}
+:::
+
+## Results
+
+Voici des résultats importants.  
+On ajoute du texte pour vérifier la colonne droite.
+
+| Sepal Length | Sepal Width |
+|--------------|-------------|
+| 5.1 | 3.5 |
+| 4.9 | 3.0 |
+
+| Sepal Length | Sepal Width |
+|--------------|-------------|
+| 5.1 | 3.5 |
+| 4.9 | 3.0 |
+
+| Sepal Length | Sepal Width |
+|--------------|-------------|
+| 5.1 | 3.5 |
+| 4.9 | 3.0 |
+
+| Sepal Length | Sepal Width |
+|--------------|-------------|
+| 5.1 | 3.5 |
+| 4.9 | 3.0 |
+
+## Discussion
+
+Discussion des résultats obtenus.Nous avons vraiment souffert pour arriver au bout de notre projet quarto.
+
+## References
+
+- Morrison (2019)
