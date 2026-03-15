@@ -17,7 +17,7 @@
   <meta name="author" content="Firmin C."><meta name="author" content="Another Contributor">
   
 
-  <title>Poster MVP Test</title>
+  <title>Betterland: A Web-First Scientific Poster for Quarto</title>
 
   
     <link rel="stylesheet" href="_extensions/poster/poster-html/poster.css">
@@ -43,8 +43,8 @@
         <div class="poster-layout">
         <div id="poster-header" class="poster-header" aria-label="Poster header" role="banner">
         <div class="poster-title-group">
-        <h1 class="poster-title">Poster MVP Test</h1>
-        <p class="poster-subtitle">Validation technique du format poster-html</p>
+        <h1 class="poster-title">Betterland: A Web-First Scientific Poster for Quarto</h1>
+        <p class="poster-subtitle">An MVP extension for semantic, responsive, and print-feasible academic posters</p>
         </div>
         <div class="poster-author-group">
         <div class="poster-authors">
@@ -53,57 +53,82 @@
         </div>
         <div class="poster-affiliation-group">
         <div class="poster-affiliation-item">
-        <p><sup>1</sup> RPTU Kaiserslautern</p>
+        <p><sup>1</sup> RPTU Kaiserslautern-Landau</p>
         </div>
         <div class="poster-affiliation-item">
-        <p><sup>2</sup> Other Lab</p>
+        <p><sup>2</sup> Example Research Lab</p>
         </div>
         </div>
         </div>
         <div id="poster-key-region" class="poster-key-region" aria-label="Key message" role="region">
         <div class="poster-key-main">
-        <p>Make better posters with Quarto.</p>
+        <p>A semantic, web-first poster can preserve the visual strengths of a “better poster” while improving screen readability and structural flexibility.</p>
         </div>
         <div class="poster-key-sub">
-        <p>Transition from poster to manuscript with ease!</p>
+        <p>The MVP already supports the core content types needed for a usable scientific poster in Quarto.</p>
+        </div>
+        <div class="poster-key-extra">
+        <p>This makes the extension a strong baseline for future work on richer poster components, accessibility, and interactive HTML output.</p>
         </div>
         </div>
         <div id="poster-support-region" class="poster-support-region" aria-label="Support content" role="region">
         <div class="poster-flow poster-flow--support">
         <section id="introduction" class="level2">
         <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-        <p>Du texte d’introduction.<br>
-        Un peu plus de texte pour tester le flux. Du texte d’introduction.<br>
-        Un peu plus de texte pour tester le flux. Du texte d’introduction.<br>
-        Un peu plus de texte pour tester le flux. Du texte d’introduction.<br>
-        Un peu plus de texte pour tester le flux.</p>
+        <p>Scientific posters are usually designed for print and later distributed as PDFs.<br>
+        This often makes them difficult to read on screens, difficult to search, and less adaptable than HTML-based documents.</p>
+        <p>This prototype explores a <strong>web-first poster model</strong> for Quarto, combining: - semantic structure - responsive presentation - print-feasible export - support for common scholarly poster content</p>
         </section>
-        <section id="objectives" class="level2">
-        <h2 class="anchored" data-anchor-id="objectives">Objectives</h2>
+        <section id="contributions" class="level2">
+        <h2 class="anchored" data-anchor-id="contributions">Contributions</h2>
+        <p>This MVP focuses on the most important poster requirements:</p>
         <ul>
-        <li>Objectif 1</li>
-        <li>Objectif 2</li>
-        <li>Objectif 3</li>
-        <li>Objectif 1</li>
-        <li>Objectif 2</li>
-        <li>Objectif 3</li>
-        <li>Objectif 1</li>
-        <li>Objectif 2</li>
-        <li>Objectif 3</li>
-        <li>Objectif 1</li>
-        <li>Objectif 2</li>
-        <li>Objectif 3</li>
+        <li>semantic header, key-message, support, detail, and resources regions</li>
+        <li>responsive screen layout for web viewing</li>
+        <li>print-feasible A0/A1 output</li>
+        <li>support for text, lists, images, tables, references, and resources</li>
+        <li>an extensible baseline for future scientific-poster components</li>
         </ul>
         </section>
         <section id="methods" class="level2">
         <h2 class="anchored" data-anchor-id="methods">Methods</h2>
-        <p>Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche. Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche. Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche. Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche. Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche. Description des méthodes utilisées.<br>
-        Un peu plus de contenu ici pour remplir la colonne gauche.</p>
+        <p>The implementation is based on three layers:</p>
+        <ol type="1">
+        <li><strong>Lua transformation</strong> to classify and reorganize content into semantic poster regions<br>
+        </li>
+        <li><strong>HTML template</strong> to provide a clean web-first container and poster variables<br>
+        </li>
+        <li><strong>CSS / print CSS</strong> to create responsive screen layout and print behavior</li>
+        </ol>
+        <p>This keeps the authoring experience close to standard Quarto while introducing poster-specific structure.</p>
+        </section>
+        <section id="implementation" class="level2">
+        <h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+        <p>The poster extension currently supports:</p>
+        <ul>
+        <li>metadata extraction from YAML</li>
+        <li>automatic header generation</li>
+        <li>explicit <code>.key-message</code> block extraction</li>
+        <li>explicit <code>.resources</code> block extraction</li>
+        <li>default support/detail splitting around the key message</li>
+        <li>semantic region wrappers for accessibility and maintainability</li>
+        </ul>
+        <div class="quarto-figure quarto-figure-center">
+        <figure class="figure">
+        <p><img src="https://via.placeholder.com/800x420.png?text=Workflow+Diagram" class="img-fluid figure-img"></p>
+        <figcaption>Example architecture or workflow diagram</figcaption>
+        </figure>
+        </div>
+        </section>
+        <section id="evaluation" class="level2">
+        <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+        <p>The MVP was evaluated against the following questions:</p>
+        <ul>
+        <li>Can the poster be meaningfully read in a browser without behaving like a static PDF?</li>
+        <li>Can the same source be printed into a poster-sized output?</li>
+        <li>Can common scientific poster content types be displayed without custom author-side hacks?</li>
+        <li>Does the structure remain extensible enough for future work?</li>
+        </ul>
         </section>
         </div>
         </div>
@@ -111,89 +136,130 @@
         <div class="poster-flow poster-flow--detail">
         <section id="results" class="level2">
         <h2 class="anchored" data-anchor-id="results">Results</h2>
-        <p>Voici des résultats importants.<br>
-        On ajoute du texte pour vérifier la colonne droite.</p>
+        <p>The current prototype demonstrates a working poster pipeline with a clear region hierarchy and support for core scholarly content.</p>
         <table class="caption-top table">
         <thead>
         <tr class="header">
-        <th>Sepal Length</th>
-        <th>Sepal Width</th>
+        <th>Feature</th>
+        <th>MVP status</th>
         </tr>
         </thead>
         <tbody>
         <tr class="odd">
-        <td>5.1</td>
-        <td>3.5</td>
+        <td>Semantic header</td>
+        <td>Implemented</td>
         </tr>
         <tr class="even">
-        <td>4.9</td>
-        <td>3.0</td>
+        <td>Key message extraction</td>
+        <td>Implemented</td>
+        </tr>
+        <tr class="odd">
+        <td>Resources region</td>
+        <td>Implemented</td>
+        </tr>
+        <tr class="even">
+        <td>Responsive screen layout</td>
+        <td>Implemented</td>
+        </tr>
+        <tr class="odd">
+        <td>Print-feasible output</td>
+        <td>Implemented</td>
+        </tr>
+        <tr class="even">
+        <td>Advanced content presets</td>
+        <td>Future work</td>
         </tr>
         </tbody>
         </table>
         <table class="caption-top table">
         <thead>
         <tr class="header">
-        <th>Sepal Length</th>
-        <th>Sepal Width</th>
+        <th>Content type</th>
+        <th>Current support</th>
         </tr>
         </thead>
         <tbody>
         <tr class="odd">
-        <td>5.1</td>
-        <td>3.5</td>
+        <td>Paragraphs</td>
+        <td>Strong</td>
         </tr>
         <tr class="even">
-        <td>4.9</td>
-        <td>3.0</td>
+        <td>Lists</td>
+        <td>Strong</td>
         </tr>
-        </tbody>
-        </table>
-        <table class="caption-top table">
-        <thead>
-        <tr class="header">
-        <th>Sepal Length</th>
-        <th>Sepal Width</th>
-        </tr>
-        </thead>
-        <tbody>
         <tr class="odd">
-        <td>5.1</td>
-        <td>3.5</td>
+        <td>Figures</td>
+        <td>Strong</td>
         </tr>
         <tr class="even">
-        <td>4.9</td>
-        <td>3.0</td>
+        <td>Tables</td>
+        <td>Strong</td>
         </tr>
-        </tbody>
-        </table>
-        <table class="caption-top table">
-        <thead>
-        <tr class="header">
-        <th>Sepal Length</th>
-        <th>Sepal Width</th>
-        </tr>
-        </thead>
-        <tbody>
         <tr class="odd">
-        <td>5.1</td>
-        <td>3.5</td>
+        <td>Code blocks</td>
+        <td>Partial</td>
         </tr>
         <tr class="even">
-        <td>4.9</td>
-        <td>3.0</td>
+        <td>Equations</td>
+        <td>Partial</td>
+        </tr>
+        <tr class="odd">
+        <td>Interactive elements</td>
+        <td>Future work</td>
         </tr>
         </tbody>
         </table>
+        </section>
+        <section id="detail-example" class="level2">
+        <h2 class="anchored" data-anchor-id="detail-example">Detail Example</h2>
+        <p>The extension is intended to support richer scientific content over time.<br>
+        For example, compact technical detail can already be included:</p>
+        <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_blocks(blocks):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    support <span class="op">=</span> []</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    detail <span class="op">=</span> []</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    seen_key <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> block <span class="kw">in</span> blocks:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> block.get(<span class="st">"is_key"</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            seen_key <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> seen_key:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            detail.append(block)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            support.append(block)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> support, detail</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+        <p>An example mathematical expression may also appear in technical posters.</p>
+        <p>For instance, the <strong>F1-score</strong> can be written as:</p>
+        <p><span class="math display">\[
+        F_1 = 2 \cdot \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}
+        \]</span></p>
         </section>
         <section id="discussion" class="level2">
         <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-        <p>Discussion des résultats obtenus.Nous avons vraiment souffert pour arriver au bout de notre projet quarto.</p>
-        </section>
-        <section id="references" class="level2">
-        <h2 class="anchored" data-anchor-id="references">References</h2>
+        <p>The MVP is already sufficient to demonstrate the project goals, but several limitations remain.</p>
+        <p>Current limitations include:</p>
         <ul>
-        <li>Morrison (2019)</li>
+        <li>browser-specific print inconsistencies</li>
+        <li>only partial optimization for code and equations</li>
+        <li>limited component-level presets for figures, callouts, and tables</li>
+        <li>incomplete control over PDF logical reading order</li>
+        </ul>
+        </section>
+        <section id="future-work" class="level2">
+        <h2 class="anchored" data-anchor-id="future-work">Future Work</h2>
+        <p>The most important next steps are:</p>
+        <ul>
+        <li>improved figure and table styling by region</li>
+        <li>callout and note components</li>
+        <li>stronger support for equations and code</li>
+        <li>richer key-region visual elements</li>
+        <li>improved PDF reading-order robustness</li>
+        <li>optional interactive HTML poster features</li>
+        </ul>
+        </section>
+        <section id="references" class="level2 poster-references">
+        <h2 class="poster-references anchored" data-anchor-id="references">References</h2>
+        <ul>
+        <li>Morrison (2019). Better posters.</li>
+        <li>Faulkes (2021). Designing more effective posters.</li>
         </ul>
         <div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden">
 

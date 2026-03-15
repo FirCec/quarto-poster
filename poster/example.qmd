@@ -1,22 +1,21 @@
 ---
-title: "Poster MVP Test"
-subtitle: "Validation technique du format poster-html"
+title: "Betterland: A Web-First Scientific Poster for Quarto"
+subtitle: "An MVP extension for semantic, responsive, and print-feasible academic posters"
 author:
   - name: Firmin C.
     affil: 1
     main: true
     email: firmin@example.com
     orcid: "0000-0000-0000-0000"
-    twitter: firmin_c
     github: firminc
     website: https://example.com
   - name: Another Contributor
     affil: [1,2]
 affiliation:
   - num: 1
-    address: RPTU Kaiserslautern
+    address: RPTU Kaiserslautern-Landau
   - num: 2
-    address: Other Lab
+    address: Example Research Lab
 format:
   poster-html:
     orientation: landscape
@@ -24,86 +23,143 @@ format:
 
 ## Introduction
 
-Du texte d’introduction.  
-Un peu plus de texte pour tester le flux.
-Du texte d’introduction.  
-Un peu plus de texte pour tester le flux.
-Du texte d’introduction.  
-Un peu plus de texte pour tester le flux.
-Du texte d’introduction.  
-Un peu plus de texte pour tester le flux.
+Scientific posters are usually designed for print and later distributed as PDFs.  
+This often makes them difficult to read on screens, difficult to search, and less adaptable than HTML-based documents.
 
-## Objectives
+This prototype explores a **web-first poster model** for Quarto, combining:
+- semantic structure
+- responsive presentation
+- print-feasible export
+- support for common scholarly poster content
 
-- Objectif 1
-- Objectif 2
-- Objectif 3
-- Objectif 1
-- Objectif 2
-- Objectif 3
-- Objectif 1
-- Objectif 2
-- Objectif 3
-- Objectif 1
-- Objectif 2
-- Objectif 3
+## Contributions
+
+This MVP focuses on the most important poster requirements:
+
+- semantic header, key-message, support, detail, and resources regions
+- responsive screen layout for web viewing
+- print-feasible A0/A1 output
+- support for text, lists, images, tables, references, and resources
+- an extensible baseline for future scientific-poster components
 
 ## Methods
 
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
-Description des méthodes utilisées.  
-Un peu plus de contenu ici pour remplir la colonne gauche.
+The implementation is based on three layers:
+
+1. **Lua transformation** to classify and reorganize content into semantic poster regions  
+2. **HTML template** to provide a clean web-first container and poster variables  
+3. **CSS / print CSS** to create responsive screen layout and print behavior  
+
+This keeps the authoring experience close to standard Quarto while introducing poster-specific structure.
+
+## Implementation
+
+The poster extension currently supports:
+
+- metadata extraction from YAML
+- automatic header generation
+- explicit `.key-message` block extraction
+- explicit `.resources` block extraction
+- default support/detail splitting around the key message
+- semantic region wrappers for accessibility and maintainability
+
+![Example architecture or workflow diagram](https://via.placeholder.com/800x420.png?text=Workflow+Diagram)
+
+## Evaluation
+
+The MVP was evaluated against the following questions:
+
+- Can the poster be meaningfully read in a browser without behaving like a static PDF?
+- Can the same source be printed into a poster-sized output?
+- Can common scientific poster content types be displayed without custom author-side hacks?
+- Does the structure remain extensible enough for future work?
 
 ::: {.key-message}
-Make better posters with Quarto.
+A semantic, web-first poster can preserve the visual strengths of a “better poster” while improving screen readability and structural flexibility.
 
-Transition from poster to manuscript with ease!
+The MVP already supports the core content types needed for a usable scientific poster in Quarto.
+
+This makes the extension a strong baseline for future work on richer poster components, accessibility, and interactive HTML output.
 :::
+
+## Results
+
+The current prototype demonstrates a working poster pipeline with a clear region hierarchy and support for core scholarly content.
+
+| Feature | MVP status |
+|---|---|
+| Semantic header | Implemented |
+| Key message extraction | Implemented |
+| Resources region | Implemented |
+| Responsive screen layout | Implemented |
+| Print-feasible output | Implemented |
+| Advanced content presets | Future work |
+
+| Content type | Current support |
+|---|---|
+| Paragraphs | Strong |
+| Lists | Strong |
+| Figures | Strong |
+| Tables | Strong |
+| Code blocks | Partial |
+| Equations | Partial |
+| Interactive elements | Future work |
+
+## Detail Example
+
+The extension is intended to support richer scientific content over time.  
+For example, compact technical detail can already be included:
+
+```python
+def classify_blocks(blocks):
+    support = []
+    detail = []
+    seen_key = False
+    for block in blocks:
+        if block.get("is_key"):
+            seen_key = True
+        elif seen_key:
+            detail.append(block)
+        else:
+            support.append(block)
+    return support, detail
+```
+An example mathematical expression may also appear in technical posters.
+
+For instance, the **F1-score** can be written as:
+
+$$
+F_1 = 2 \cdot \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}
+$$
+
+## Discussion
+
+The MVP is already sufficient to demonstrate the project goals, but several limitations remain.
+
+Current limitations include:
+
+- browser-specific print inconsistencies
+- only partial optimization for code and equations
+- limited component-level presets for figures, callouts, and tables
+- incomplete control over PDF logical reading order
+
+## Future Work
+
+The most important next steps are:
+
+- improved figure and table styling by region
+- callout and note components
+- stronger support for equations and code
+- richer key-region visual elements
+- improved PDF reading-order robustness
+- optional interactive HTML poster features
+
+## References
+
+- Morrison (2019). Better posters.
+- Faulkes (2021). Designing more effective posters.
 
 ::: {.resources}
 ![](_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
 ![](_extensions/poster/poster-html/assets/orcid.svg.png){.logo}
 :::
-
-
-## Results
-
-Voici des résultats importants.  
-On ajoute du texte pour vérifier la colonne droite.
-
-| Sepal Length | Sepal Width |
-|--------------|-------------|
-| 5.1 | 3.5 |
-| 4.9 | 3.0 |
-
-| Sepal Length | Sepal Width |
-|--------------|-------------|
-| 5.1 | 3.5 |
-| 4.9 | 3.0 |
-
-| Sepal Length | Sepal Width |
-|--------------|-------------|
-| 5.1 | 3.5 |
-| 4.9 | 3.0 |
-
-| Sepal Length | Sepal Width |
-|--------------|-------------|
-| 5.1 | 3.5 |
-| 4.9 | 3.0 |
-
-## Discussion
-
-Discussion des résultats obtenus.Nous avons vraiment souffert pour arriver au bout de notre projet quarto.
-
-## References
-
-- Morrison (2019)

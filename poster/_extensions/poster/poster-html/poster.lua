@@ -1,5 +1,5 @@
 -- =========================================================
--- poster.lua (Betterland v2 - semantic/web-first baseline)
+-- poster.lua (Betterland v2 - cleaned MVP baseline)
 -- =========================================================
 
 -- ---------------------------------------------------------
@@ -48,6 +48,7 @@ local function append_class(attr, class_name)
       break
     end
   end
+
   if not already then
     table.insert(classes, class_name)
   end
@@ -74,29 +75,11 @@ local function text_equals_ci(a, b)
   return stringify(a):lower() == tostring(b):lower()
 end
 
-local function is_references_section(block)
-  if not block or block.t ~= "Div" then
-    return false
-  end
-
-  if block.identifier == "references" then
-    return true
-  end
-
-  if #block.content > 0 then
-    local first = block.content[1]
-    if first and first.t == "Header" and text_equals_ci(first.content, "references") then
-      return true
-    end
-  end
-
-  return false
-end
-
 local function text_to_inlines(text)
   if text == nil or text == "" then
     return {}
   end
+
   local doc = pandoc.read(text, "markdown")
   if #doc.blocks > 0 then
     local first = doc.blocks[1]
@@ -104,26 +87,11 @@ local function text_to_inlines(text)
       return first.content
     end
   end
+
   return { pandoc.Str(text) }
 end
 
-
-local function blocks_to_div(blocks, attr)
-  return pandoc.Div(blocks or {}, attr)
-end
-
-local function para_with_class(inlines, class_name)
-  return pandoc.Para({
-    pandoc.Span(inlines, pandoc.Attr("", { class_name }))
-  })
-end
-
-local function div_with_class(blocks, class_name)
-  return pandoc.Div(blocks or {}, pandoc.Attr("", { class_name }))
-end
-
 local function normalize_image_paragraphs(blocks)
-  -- Keep content as-is for now. Later this can become smarter if needed.
   return blocks or {}
 end
 
@@ -139,8 +107,23 @@ local function escape_html(s)
   return s
 end
 
-local function attr_with_props(id, classes, attrs)
-  return pandoc.Attr(id or "", classes or {}, attrs or {})
+local function is_references_section(block)
+  if not block then
+    return false
+  end
+
+  if block.identifier == "references" then
+    return true
+  end
+
+  if block.t == "Div" and #block.content > 0 then
+    local first = block.content[1]
+    if first and first.t == "Header" and text_equals_ci(first.content, "references") then
+      return true
+    end
+  end
+
+  return false
 end
 
 -- ---------------------------------------------------------
@@ -164,26 +147,13 @@ local function is_metamap(x)
   return t == "Map" or t == "MetaMap"
 end
 
-local function is_metastring(x)
-  local t = meta_type(x)
-  return t == "Inlines" or t == "MetaString"
-end
-
-local function is_metainlines(x)
-  local t = meta_type(x)
-  return t == "Inlines" or t == "MetaInlines"
-end
-
-
-
-
 local function meta_to_string(x)
   return stringify(x)
 end
 
-
 local function as_string_list(meta_val)
   local out = {}
+
   if meta_val == nil then
     return out
   end
@@ -215,7 +185,10 @@ local function parse_authors(meta)
 
   if is_metalist(a) then
     for _, item in ipairs(a) do
-      if is_metamap(item) then
+      if type(item) == "table" and (
+        item.name ~= nil or item.affil ~= nil or item.email ~= nil or
+        item.orcid ~= nil or item.twitter ~= nil or item.github ~= nil or item.website ~= nil
+      ) then
         local obj = {
           name = meta_to_string(item.name) ~= "" and meta_to_string(item.name) or meta_to_string(item),
           affil_nums = as_string_list(item.affil),
@@ -224,7 +197,23 @@ local function parse_authors(meta)
           orcid = meta_to_string(item.orcid),
           twitter = meta_to_string(item.twitter),
           github = meta_to_string(item.github),
-          website = meta_to_string(item.website),
+          website = meta_to_string(item.website)
+        }
+
+        local main_value = meta_to_string(item.main):lower()
+        obj.main = (main_value == "true" or main_value == "yes" or main_value == "1")
+
+        table.insert(authors, obj)
+      elseif is_metamap(item) then
+        local obj = {
+          name = meta_to_string(item.name) ~= "" and meta_to_string(item.name) or meta_to_string(item),
+          affil_nums = as_string_list(item.affil),
+          main = false,
+          email = meta_to_string(item.email),
+          orcid = meta_to_string(item.orcid),
+          twitter = meta_to_string(item.twitter),
+          github = meta_to_string(item.github),
+          website = meta_to_string(item.website)
         }
 
         local main_value = meta_to_string(item.main):lower()
@@ -274,8 +263,6 @@ local function parse_authors(meta)
   return authors
 end
 
-
-
 local function parse_affiliations(meta)
   local aff = meta.affiliation
   local out = {}
@@ -286,7 +273,6 @@ local function parse_affiliations(meta)
 
   if is_metalist(aff) then
     for i, item in ipairs(aff) do
-      -- Case 1: structured item with fields (plain Lua table or MetaMap-like)
       if type(item) == "table" and (item.num ~= nil or item.address ~= nil) then
         local num = meta_to_string(item.num)
         local address = meta_to_string(item.address)
@@ -299,8 +285,6 @@ local function parse_affiliations(meta)
           num = num,
           address = address
         })
-
-      -- Case 2: fallback simple item
       else
         table.insert(out, {
           num = tostring(i),
@@ -318,12 +302,15 @@ local function parse_affiliations(meta)
   return out
 end
 
-
+-- ---------------------------------------------------------
+-- Metadata rendering
+-- ---------------------------------------------------------
 
 local function superscript_inlines(nums)
   if not nums or #nums == 0 then
     return {}
   end
+
   return {
     pandoc.Superscript({
       pandoc.Str(table.concat(nums, ","))
@@ -334,12 +321,13 @@ end
 local function author_name_inlines(author)
   local inlines = text_to_inlines(author.name)
   local sups = superscript_inlines(author.affil_nums)
+
   for _, s in ipairs(sups) do
     table.insert(inlines, s)
   end
+
   return inlines
 end
-
 
 local function build_author_group(authors)
   if #authors == 0 then
@@ -381,9 +369,6 @@ local function build_author_group(authors)
   return pandoc.Div(blocks, pandoc.Attr("", { "poster-author-group" }))
 end
 
-
-
-
 local function build_affiliation_group(affs)
   if #affs == 0 then
     return nil
@@ -411,9 +396,6 @@ local function build_affiliation_group(affs)
 
   return pandoc.Div(blocks, pandoc.Attr("", { "poster-affiliation-group" }))
 end
-
-
-
 
 local function contact_link(label, href)
   return pandoc.Link(label, href)
@@ -480,11 +462,6 @@ local function build_contact_group(authors)
 
   return pandoc.Div(blocks, pandoc.Attr("", { "poster-contact-group" }))
 end
-
-
-
-
-
 
 local function build_header(meta)
   local blocks = {}
@@ -607,10 +584,8 @@ local function build_key_region(key_div)
       ["role"] = "region",
       ["aria-label"] = "Key message"
     })
-    )
+  )
 end
-
-
 
 local function build_resources_region(resources_div)
   if not resources_div then
@@ -636,14 +611,12 @@ local function build_resources_region(resources_div)
   )
 end
 
-
 local function decorate_detail_blocks(blocks)
   local out = {}
 
   for _, block in ipairs(blocks) do
     if is_references_section(block) then
-      local attr = append_class(block.attr, "poster-references")
-      block.attr = attr
+      block.attr = append_class(block.attr, "poster-references")
     end
     table.insert(out, block)
   end
@@ -651,10 +624,11 @@ local function decorate_detail_blocks(blocks)
   return out
 end
 
-
 local function build_support_region(blocks)
   return pandoc.Div(
-    { pandoc.Div(blocks or {}, pandoc.Attr("", { "poster-flow", "poster-flow--support" })) },
+    {
+      pandoc.Div(blocks or {}, pandoc.Attr("", { "poster-flow", "poster-flow--support" }))
+    },
     pandoc.Attr("poster-support-region", { "poster-support-region" }, {
       ["role"] = "region",
       ["aria-label"] = "Support content"
@@ -662,11 +636,11 @@ local function build_support_region(blocks)
   )
 end
 
-
-
 local function build_detail_region(blocks)
   return pandoc.Div(
-    { pandoc.Div(decorate_detail_blocks(blocks or {}), pandoc.Attr("", { "poster-flow", "poster-flow--detail" })) },
+    {
+      pandoc.Div(decorate_detail_blocks(blocks or {}), pandoc.Attr("", { "poster-flow", "poster-flow--detail" }))
+    },
     pandoc.Attr("poster-detail-region", { "poster-detail-region" }, {
       ["role"] = "region",
       ["aria-label"] = "Detailed results"
@@ -702,6 +676,11 @@ local function is_explicit_detail(block)
     and has_class(block, "poster-detail")
 end
 
+-- Classification rule:
+-- 1) explicit key/resources blocks are extracted
+-- 2) explicit poster-support/poster-detail blocks override defaults
+-- 3) remaining blocks before key go to support
+-- 4) remaining blocks after key go to detail
 local function classify_blocks(blocks)
   local key_block = nil
   local resources_block = nil
@@ -714,16 +693,12 @@ local function classify_blocks(blocks)
     if is_key_message_div(block) and key_block == nil then
       key_block = block
       seen_key = true
-
     elseif is_resources_div(block) and resources_block == nil then
       resources_block = block
-
     elseif is_explicit_support(block) then
       table.insert(support_blocks, block)
-
     elseif is_explicit_detail(block) then
       table.insert(detail_blocks, block)
-
     else
       if seen_key then
         table.insert(detail_blocks, block)
@@ -768,4 +743,3 @@ function Pandoc(doc)
   doc.blocks = { layout }
   return doc
 end
-
