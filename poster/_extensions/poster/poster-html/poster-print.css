@@ -1,83 +1,279 @@
 /* =========================================================
-   poster-print.css — PRINT (A0/A1)
-   Does NOT affect screen rendering.
-   Relies on template CSS variables:
-   --poster-page-width, --poster-page-height
+   poster-print.css — PRINT (Betterland v2, fitted)
    ========================================================= */
- /* 1) Page size + no margins (poster needs edge-to-edge) */
-@page {
-    size: A0 landscape;
-    margin: 0;
+
+@page{
+  size: A0 landscape;
+  margin: 8mm;
 }
 
-@media print {
-
- 
+@media print{
 
   html, body{
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
+    width: var(--poster-page-width) !important;
+    height: var(--poster-page-height) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
   }
 
-  /* 2) Remove Quarto page layout wrappers (again, print-safe) */
+  body.poster-html{
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Neutralize Quarto wrappers */
   body.poster-html #quarto-content,
   body.poster-html #quarto-document-content{
     margin: 0 !important;
     padding: 0 !important;
     max-width: none !important;
-    width: auto !important;
-  }
-
-  /* 3) Make poster exactly one physical page */
-  body.poster-html .poster__wrap{
-    margin: 0 !important;
-    padding: 0 !important;
-
-    width: 100% !important;
-    height: 100% !important;
-    
-  }
-
-    body.poster-html .poster__grid{
-    overflow: hidden;
-  }
-
-  /* 4) Grid fills the page */
-  body.poster-html .poster__grid{
     width: 100% !important;
     height: 100% !important;
     min-height: 0 !important;
   }
 
-  /* 5) No internal scrolling in print */
-  body.poster-html .poster-left,
-  body.poster-html .poster-center,
-  body.poster-html .poster-right{
-    overflow: visible !important;
-  }
-  body.poster-html .poster-left .poster-flow,
-  body.poster-html .poster-right .poster-flow{
-    max-width: none !important;
+  /* Poster canvas = full physical page */
+.poster__wrap{
+  margin: 0 !important;
+  padding: 12mm !important;
+  width: var(--poster-page-width) !important;
+  height: var(--poster-page-height) !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-  /* 6) Print color fidelity */
+
+  .poster__isolate{
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .poster-layout{
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: grid !important;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1.45fr)
+      minmax(0, 1fr) !important;
+    grid-template-areas:
+      "header key detail"
+      "support key detail"
+      "support resources detail" !important;
+    grid-template-rows: auto 1fr auto !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  .poster-header{
+    grid-area: header !important;
+    padding: 0 10mm 8mm 0 !important;
+    align-content: start !important;
+    gap: 3mm !important;
+  }
+
+  .poster-support-region{
+    grid-area: support !important;
+    padding: 0 12mm 0 0 !important;
+    display: grid !important;
+    align-content: start !important;
+    overflow: visible !important;
+  }
+
+  .poster-key-region{
+    grid-area: key !important;
+    padding: 14mm !important;
+    display: grid !important;
+    align-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .poster-resources-region{
+    grid-area: resources !important;
+    padding: 3mm 14mm 6mm !important;
+    display: grid !important;
+    align-content: end !important;
+    overflow: hidden !important;
+  }
+
+  .poster-detail-region{
+    grid-area: detail !important;
+    padding: 0 0 0 12mm !important;
+    display: grid !important;
+    align-content: start !important;
+    overflow: visible !important;
+  }
+
+  .poster-flow,
+  .poster-flow--support,
+  .poster-flow--detail{
+    max-width: none !important;
+    overflow: visible !important;
+  }
+
+  /* Print typography */
+  .poster-title-group h1{
+    font-size: 72pt !important;
+    line-height: 0.98 !important;
+    margin: 0 0 2mm !important;
+  }
+
+  .poster-title-group p,
+  .poster-subtitle{
+    font-size: 28pt !important;
+    line-height: 1.1 !important;
+    margin: 0 0 3mm !important;
+  }
+
+  .poster-authors p,
+  .poster-coauthors p{
+    font-size: 21pt !important;
+    line-height: 1.18 !important;
+    margin: 0 0 2mm !important;
+  }
+
+  .poster-affiliation-item p,
+  .poster-contact-line p{
+    font-size: 15.5pt !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+
+  .poster-title-group,
+  .poster-author-group,
+  .poster-affiliation-group,
+  .poster-contact-group{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .poster-flow{
+    font-size: 20pt !important;
+    line-height: 1.29 !important;
+  }
+
+  .poster-flow h2{
+    font-size: 32pt !important;
+    line-height: 1.06 !important;
+    margin: 0 0 2mm !important;
+  }
+
+  .poster-key-main p{
+    font-size: 98pt !important;
+    line-height: 0.98 !important;
+    margin: 0 !important;
+  }
+
+  .poster-key-sub p{
+    font-size: 34pt !important;
+    line-height: 1.12 !important;
+    margin: 0 !important;
+  }
+
+  /* Tables print normally */
+  .poster-flow table,
+  .poster-flow table.table,
+  .poster-flow table.caption-top{
+    display: table !important;
+    width: auto !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+    margin: 0 0 5mm 0 !important;
+    float: none !important;
+    clear: both !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .poster-flow table{
+    margin-left: 1mm !important;
+  }
+
+  .poster-flow table + table{
+    margin-top: 3mm !important;
+  }
+
+  .poster-flow thead th{
+    padding: 0.18rem 0.35rem !important;
+    border-bottom: 0.35mm solid rgba(0,0,0,.18) !important;
+    font-size: 9.5pt !important;
+    white-space:  nowrap !important;
+  }
+
+  .poster-flow td{
+    padding: 0.18rem 0.35rem !important;
+    font-size: 9.2pt !important;
+    vertical-align: top !important;
+    white-space: nowrap !important;
+  }
+
+  .poster-flow tbody tr:last-child td{
+    border-bottom: 0.3mm solid rgba(0,0,0,.10) !important;
+  }
+
+  .poster-flow section > p + table{
+    margin-top: 3mm !important;
+  }
+
+  .poster-flow section > p + table{
+    margin-top: 3mm !important;
+  }
+
+  /* lists print normally */
+  .poster-flow ul,
+  .poster-flow ol{
+    margin: 0.45rem 0 0.7rem 1rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .poster-flow li{
+    margin: 0.15rem 0 !important;
+  }
+
+
+  /* Resources row */
+  .poster-resources-content p{
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: end !important;
+    gap: 8mm !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    line-height: 0 !important;
+  }
+
+  .poster-resources-content img.qr{
+    width: 58mm !important;
+    height: auto !important;
+  }
+
+  .poster-resources-content img.logo{
+    width: 70mm !important;
+    height: auto !important;
+  }
+
+  .poster-flow img,
+  .poster-resources-content img{
+    max-width: 100% !important;
+    display: block !important;
+  }
+
+  /* Keep colors */
   *{
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  /* 7) Avoid awkward breaks inside key blocks */
-  .poster-center,
-  .poster-meta,
-  .poster-key,
-  .poster-branding,
-  figure, table, pre{
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  /* 8) Links: keep readable */
   a{
     color: inherit !important;
     text-decoration: none !important;

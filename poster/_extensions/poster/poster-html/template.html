@@ -31,10 +31,8 @@
 
 <body class="poster poster-html $if(orientation)$poster--$orientation$$else$poster--landscape$endif$"
       style="
-        /* Print size defaults: ISO A0 landscape */
         --poster-page-width: $if(page-width)$$page-width$$else$1189mm$endif$;
         --poster-page-height: $if(page-height)$$page-height$$else$841mm$endif$;
-
         --poster-primary: $if(primary-color)$$primary-color$$else$#0b4545$endif$;
         --poster-secondary: $if(secondary-color)$$secondary-color$$else$#008080$endif$;
         --poster-accent: $if(accent-color)$$accent-color$$else$#cc0000$endif$;
@@ -44,11 +42,13 @@
   $include-before$
   $endfor$
 
-  <div class="poster__wrap">
-    <div class="poster__isolate">
-      $body$
+  <main id="poster-main" class="poster-main" role="main">
+    <div class="poster__wrap">
+      <div class="poster__isolate">
+        $body$
+      </div>
     </div>
-  </div>
+  </main>
 
   $for(include-after-body)$
   $include-after-body$

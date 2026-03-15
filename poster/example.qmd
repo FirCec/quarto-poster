@@ -69,10 +69,11 @@ Make better posters with Quarto.
 Transition from poster to manuscript with ease!
 :::
 
-::: {.branding}
-![](../poster/_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
-![](https://via.placeholder.com/200){.logo}
+::: {.resources}
+![](_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
+![](_extensions/poster/poster-html/assets/orcid.svg.png){.logo}
 :::
+
 
 ## Results
 
