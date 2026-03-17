@@ -169,5 +169,4 @@ The most important next steps are:
 
 ::: {.resources}
 ![](_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
-![](_extensions/poster/poster-html/assets/orcid.svg.png){.logo}
 :::

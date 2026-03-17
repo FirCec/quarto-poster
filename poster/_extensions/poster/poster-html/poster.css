@@ -101,12 +101,23 @@ body.poster-html{
     minmax(520px, 1.45fr)
     minmax(300px, 1fr);
   grid-template-areas:
-    "header key detail"
-    "support key detail"
-    "support resources detail";
-  grid-template-rows: auto 1fr auto;
+    "header center detail"
+    "support center detail";
+  grid-template-rows: auto 1fr;
   align-items: stretch;
-  min-height: calc(100vh - 1.25rem);
+}
+
+.poster-center-column{
+  grid-area: center;
+  min-width: 0;
+  background: var(--poster-primary);
+  color: rgba(255,255,255,.96);
+  display: flex;
+  flex-direction: column;
+  padding-top: clamp(1.5rem, 2.2vh, 2.5rem);
+  padding-right: var(--s-4);
+  padding-bottom: clamp(1.25rem, 2vh, 1.75rem);
+  padding-left: var(--s-4);
 }
 
 
@@ -142,34 +153,35 @@ body.poster-html{
 }
 
 .poster-key-region{
-  grid-area: key;
-  background: var(--poster-primary);
-  color: rgba(255,255,255,.96);
-  padding: var(--s-4);
-  padding-bottom: 0.75rem;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-2);
+}
+
+.poster-resources-region{
+  min-width: 0;
+  align-self: flex-start;
+  background: transparent;
+  color: inherit;
+  padding: 0;
   border: 0;
   outline: 0;
   box-shadow: none;
   margin: 0;
   display: grid;
-  align-content: center;
-  gap: var(--s-2);
-  min-height: 320px;
-}
-
-.poster-resources-region{
-  grid-area: resources;
-  min-width: 0;
-  align-self: start;
-  background: var(--poster-primary);
-  color: rgba(255,255,255,.96);
-  padding: 0.5rem var(--s-4) 0.75rem;
-  border: 0;
-  outline: 0;
-  box-shadow: none;
-  margin: -1rem 0 0 0;
-  display: grid;
   align-content: start;
+  flex: 0 0 auto;
+  padding-top: clamp(0.75rem, 1.5vh, 1.25rem);
 }
 
 .poster-key-region,
@@ -521,6 +533,13 @@ body.poster-html{
     row-gap: 0;
   }
 
+  .poster-center-column{
+    display: contents;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
   .poster-header,
   .poster-support-region,
   .poster-detail-region{
@@ -528,12 +547,18 @@ body.poster-html{
   }
 
   .poster-key-region{
+    grid-area: key;
+    background: var(--poster-primary);
+    color: rgba(255,255,255,.96);
     min-height: auto;
     margin-top: 0.85rem;
     padding: var(--s-3);
+    display: grid;
+    align-content: start;
   }
 
   .poster-resources-region{
+    grid-area: resources;
     background: transparent;
     color: var(--poster-fg);
     padding: 0;

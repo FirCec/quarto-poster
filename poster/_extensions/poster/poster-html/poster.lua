@@ -811,13 +811,20 @@ function Pandoc(doc)
   local detail_region = build_detail_region(classified.detail_blocks)
   local resources_region = build_resources_region(classified.resources_block)
 
+  local center_column = pandoc.Div(
+    {
+      key_region,
+      resources_region
+    },
+    pandoc.Attr("", { "poster-center-column" })
+  )
+
   local layout = pandoc.Div(
     {
       header,
-      key_region,
       support_region,
-      detail_region,
-      resources_region
+      center_column,
+      detail_region
     },
     pandoc.Attr("", { "poster-layout" })
   )
