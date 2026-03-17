@@ -8,10 +8,15 @@
   $if(date-meta)$<meta name="date" content="$date-meta$" />$endif$
 
   <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+  $if(math)$
+  $math$
+  $endif$
 
   $for(header-includes)$
   $header-includes$
   $endfor$
+
+
 
   $for(css)$
   <link rel="stylesheet" href="$css$" />

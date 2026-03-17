@@ -91,8 +91,75 @@ local function text_to_inlines(text)
   return { pandoc.Str(text) }
 end
 
+local function is_spacing_inline(inl)
+  return inl
+    and (inl.t == "Space" or inl.t == "SoftBreak" or inl.t == "LineBreak")
+end
+
+local function extract_images_from_image_paragraph(block)
+  if not block or (block.t ~= "Para" and block.t ~= "Plain") then
+    return nil
+  end
+
+  local images = {}
+
+  for _, inl in ipairs(block.content) do
+    if inl.t == "Image" then
+      table.insert(images, inl)
+    elseif not is_spacing_inline(inl) then
+      return nil
+    end
+  end
+
+  if #images == 0 then
+    return nil
+  end
+
+  return images
+end
+
+local function build_resource_item_from_image(img)
+  local classes = { "poster-resource-item" }
+
+  if has_class(img, "qr") then
+    table.insert(classes, "poster-resource-item--qr")
+  end
+
+  if has_class(img, "logo") then
+    table.insert(classes, "poster-resource-item--logo")
+  end
+
+  return pandoc.Div(
+    { pandoc.Plain({ img }) },
+    pandoc.Attr("", classes)
+  )
+end
+
 local function normalize_image_paragraphs(blocks)
-  return blocks or {}
+  local normalized = {}
+  local row_items = {}
+
+  for _, block in ipairs(blocks or {}) do
+    local imgs = extract_images_from_image_paragraph(block)
+
+    if imgs then
+      for _, img in ipairs(imgs) do
+        table.insert(row_items, build_resource_item_from_image(img))
+      end
+    else
+      table.insert(normalized, block)
+    end
+  end
+
+  if #row_items > 0 then
+    table.insert(
+      normalized,
+      1,
+      pandoc.Div(row_items, pandoc.Attr("", { "poster-resource-row" }))
+    )
+  end
+
+  return normalized
 end
 
 local function escape_html(s)
@@ -124,6 +191,21 @@ local function is_references_section(block)
   end
 
   return false
+end
+
+
+local function get_poster_authors_meta(meta)
+  if meta.poster and meta.poster.authors ~= nil then
+    return meta.poster.authors
+  end
+  return meta.author
+end
+
+local function get_poster_affiliations_meta(meta)
+  if meta.poster and meta.poster.affiliations ~= nil then
+    return meta.poster.affiliations
+  end
+  return meta.affiliation
 end
 
 -- ---------------------------------------------------------
@@ -176,7 +258,7 @@ local function as_string_list(meta_val)
 end
 
 local function parse_authors(meta)
-  local a = meta.author
+  local a = get_poster_authors_meta(meta)
   local authors = {}
 
   if a == nil then
@@ -264,7 +346,7 @@ local function parse_authors(meta)
 end
 
 local function parse_affiliations(meta)
-  local aff = meta.affiliation
+  local aff = get_poster_affiliations_meta(meta)
   local out = {}
 
   if aff == nil then

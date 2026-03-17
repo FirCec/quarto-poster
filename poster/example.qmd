@@ -1,21 +1,29 @@
 ---
 title: "Betterland: A Web-First Scientific Poster for Quarto"
 subtitle: "An MVP extension for semantic, responsive, and print-feasible academic posters"
+
 author:
-  - name: Firmin C.
-    affil: 1
-    main: true
-    email: firmin@example.com
-    orcid: "0000-0000-0000-0000"
-    github: firminc
-    website: https://example.com
-  - name: Another Contributor
-    affil: [1,2]
-affiliation:
-  - num: 1
-    address: RPTU Kaiserslautern-Landau
-  - num: 2
-    address: Example Research Lab
+  - Firmin C.
+  - Another Contributor
+
+poster:
+  authors:
+    - name: Firmin C.
+      affil: [1]
+      main: true
+      email: firmin@example.com
+      orcid: "0000-0000-0000-0000"
+      github: firminc
+      website: https://example.com
+    - name: Another Contributor
+      affil: [2]
+
+  affiliations:
+    - num: 1
+      address: RPTU Kaiserslautern-Landau
+    - num: 2
+      address: Example Research Lab
+
 format:
   poster-html:
     orientation: landscape

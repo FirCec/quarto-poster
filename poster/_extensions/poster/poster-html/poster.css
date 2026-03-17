@@ -410,6 +410,25 @@ body.poster-html{
   padding-left: 1.1rem;
 }
 
+/* MATH */
+.poster-flow .math.display{
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: var(--s-2) 0;
+  text-align: center;
+}
+
+.poster-flow .math.inline{
+  white-space: normal;
+}
+
+.poster-key-region .math.display{
+  margin-top: var(--s-2);
+  margin-bottom: var(--s-2);
+  text-align: left;
+}
+
 
 /* =========================================================
    KEY REGION figure support
@@ -448,15 +467,22 @@ body.poster-html{
   background: transparent;
 }
 
-.poster-resources-content p{
-  margin: 0;
+.poster-resource-row{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: end;
   gap: var(--s-2);
   flex-wrap: nowrap;
+}
+
+.poster-resource-item{
+  display: flex;
+  align-items: end;
+}
+
+.poster-resource-item > *{
+  margin: 0;
   line-height: 0;
-  padding-top: 0.25rem;
 }
 
 .poster-resources-content img.qr{
@@ -515,10 +541,13 @@ body.poster-html{
     align-self: start;
   }
 
-  .poster-resources-content p{
+  .poster-resource-row{
     justify-content: flex-start;
     gap: var(--s-2);
     flex-wrap: wrap;
+  }
+
+  .poster-resource-item > *{
     line-height: normal;
   }
 
@@ -549,7 +578,7 @@ body.poster-html{
     padding: var(--s-3);
   }
 
-  .poster-resources-content p{
+  .poster-resource-row{
     justify-content: flex-start;
   }
 }
