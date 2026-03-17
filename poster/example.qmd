@@ -83,11 +83,10 @@ The MVP was evaluated against the following questions:
 - Does the structure remain extensible enough for future work?
 
 ::: {.key-message}
-A semantic, web-first poster can preserve the visual strengths of a “better poster” while improving screen readability and structural flexibility.
+Main finding goes here, translated into plain english.
+Emphasize the important words with **bold** or *italics* if needed.
 
-The MVP already supports the core content types needed for a usable scientific poster in Quarto.
-
-This makes the extension a strong baseline for future work on richer poster components, accessibility, and interactive HTML output.
+Additional texts and content can be added here if you really want to.
 :::
 
 ## Results

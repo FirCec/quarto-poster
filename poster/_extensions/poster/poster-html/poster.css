@@ -112,15 +112,18 @@ body.poster-html{
   min-width: 0;
   background: var(--poster-primary);
   color: rgba(255,255,255,.96);
+
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  padding-top: clamp(1.5rem, 2.2vh, 2.5rem);
-  padding-right: var(--s-4);
-  padding-bottom: clamp(1.25rem, 2vh, 1.75rem);
-  padding-left: var(--s-4);
+  justify-content: center;
+
+  padding-top: clamp(1rem, 1.2vh, 1.2rem);
+  padding-right: clamp(2.4rem, 3vw, 3.6rem);
+  padding-bottom: clamp(8rem, 12vh, 10rem);
+  padding-left: clamp(4.8rem, 5.6vw, 6.2rem);
 }
-
-
 
 
 
@@ -160,17 +163,19 @@ body.poster-html{
   outline: 0;
   box-shadow: none;
   margin: 0;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--s-2);
 }
 
 .poster-resources-region{
+  position: absolute;
+  left: clamp(5.8rem, 6.6vw, 8.2rem);
+  bottom: clamp(10rem, 11vh, 12rem);
   min-width: 0;
-  align-self: flex-start;
   background: transparent;
   color: inherit;
   padding: 0;
@@ -180,8 +185,6 @@ body.poster-html{
   margin: 0;
   display: grid;
   align-content: start;
-  flex: 0 0 auto;
-  padding-top: clamp(0.75rem, 1.5vh, 1.25rem);
 }
 
 .poster-key-region,
@@ -284,30 +287,24 @@ body.poster-html{
    KEY MESSAGE
    ========================================================= */
 
-.poster-key-main p{
-  font-family: var(--poster-font-display);
-  font-size: var(--billboard);
-  line-height: 1.04;
-  font-weight: 800;
-  margin: 0;
-}
+  .poster-key-main p{
+    font-family: var(--poster-font-display);
+    font-size: var(--billboard);
+    line-height: 1.04;
+    font-weight: 800;
+    margin: 0;
+  }
 
-.poster-key-sub p{
-  font-size: var(--billboard-sub);
-  line-height: 1.25;
-  font-weight: 600;
-  margin: 0;
-  opacity: 0.9;
-}
+  .poster-key-extra{
+    margin-top: clamp(1.2rem, 2vh, 1.8rem);
+    max-width: 45ch;
+  }
 
-.poster-key-extra{
-  margin-top: var(--s-1);
-}
-
-.poster-key-extra p{
-  margin: 0.4rem 0 0;
-}
-
+  .poster-key-extra p{
+    margin: 0;
+    line-height: 1.35;
+    opacity: 0.9;
+  }
 /* =========================================================
    SCIENTIFIC CONTENT REGIONS
    ========================================================= */
@@ -480,11 +477,7 @@ body.poster-html{
 }
 
 .poster-resource-row{
-  display: flex;
   justify-content: flex-start;
-  align-items: end;
-  gap: var(--s-2);
-  flex-wrap: nowrap;
 }
 
 .poster-resource-item{
@@ -497,8 +490,10 @@ body.poster-html{
   line-height: 0;
 }
 
+
+
 .poster-resources-content img.qr{
-  width: clamp(150px, 13vw, 220px);
+  width: clamp(135px, 11vw, 180px);
   height: auto;
 }
 
@@ -534,6 +529,7 @@ body.poster-html{
   }
 
   .poster-center-column{
+    position: static;
     display: contents;
     background: transparent;
     color: inherit;
@@ -558,12 +554,12 @@ body.poster-html{
   }
 
   .poster-resources-region{
+    position: static;
     grid-area: resources;
     background: transparent;
     color: var(--poster-fg);
     padding: 0;
     margin-top: 0.9rem;
-    align-self: start;
   }
 
   .poster-resource-row{

@@ -608,12 +608,10 @@ local function build_key_region(key_div)
   if not key_div then
     return pandoc.Div(
       {
-        pandoc.Para({
-          pandoc.Span(
-            { pandoc.Str("Missing key message") },
-            pandoc.Attr("", { "poster-key-main" })
-          )
-        })
+        pandoc.Div(
+          { pandoc.Para({ pandoc.Str("Missing key message") }) },
+          pandoc.Attr("", { "poster-key-main" })
+        )
       },
       pandoc.Attr("poster-key-region", { "poster-key-region", "poster-key-region--missing" }, {
         ["role"] = "region",
@@ -637,27 +635,30 @@ local function build_key_region(key_div)
   if #paras >= 1 then
     table.insert(
       blocks,
-      pandoc.Div({ pandoc.Para(paras[1].content) }, pandoc.Attr("", { "poster-key-main" }))
+      pandoc.Div(
+        { pandoc.Para(paras[1].content) },
+        pandoc.Attr("", { "poster-key-main" })
+      )
     )
   end
 
-  if #paras >= 2 then
-    table.insert(
-      blocks,
-      pandoc.Div({ pandoc.Para(paras[2].content) }, pandoc.Attr("", { "poster-key-sub" }))
-    )
-  end
+  local extra_blocks = {}
 
-  if #paras > 2 then
-    local extra_blocks = {}
-    for i = 3, #paras do
+  if #paras > 1 then
+    for i = 2, #paras do
       table.insert(extra_blocks, paras[i])
     end
-    table.insert(blocks, pandoc.Div(extra_blocks, pandoc.Attr("", { "poster-key-extra" })))
   end
 
-  if #others > 0 then
-    table.insert(blocks, pandoc.Div(others, pandoc.Attr("", { "poster-key-extra" })))
+  for _, block in ipairs(others) do
+    table.insert(extra_blocks, block)
+  end
+
+  if #extra_blocks > 0 then
+    table.insert(
+      blocks,
+      pandoc.Div(extra_blocks, pandoc.Attr("", { "poster-key-extra" }))
+    )
   end
 
   return pandoc.Div(
@@ -668,6 +669,7 @@ local function build_key_region(key_div)
     })
   )
 end
+
 
 local function build_resources_region(resources_div)
   if not resources_div then

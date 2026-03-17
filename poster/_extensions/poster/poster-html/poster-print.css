@@ -173,12 +173,6 @@
     margin: 0 !important;
   }
 
-  .poster-key-sub p{
-    font-size: 34pt !important;
-    line-height: 1.12 !important;
-    margin: 0 !important;
-  }
-
   /* Tables print normally */
   .poster-flow table,
   .poster-flow table.table,
