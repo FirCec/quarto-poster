@@ -7,20 +7,22 @@ contributes:
     html:
       template: poster-html/template.html
 
-      #Styles (screen and print)
+      # Styles (screen and print)
       css:
         - poster-html/poster.css
         - poster-html/poster-print.css
-      
-      #Lua filters for "smart" behavior (key-messages, optional references, etc)
+
+      # Lua filter for content classification and region building
       filters:
         - poster-html/poster.lua
-      
-      #Default options for this format
+
+      # Layout: custom tells Quarto not to inject its own
+      # column grid or document-content wrappers.
+      # Our template owns the full page structure.
+      page-layout: custom
+
+      # Suppress Quarto defaults that don't apply to posters
       toc: false
       number-sections: false
       code-fold: false
-      #link-external-icons: false
       smooth-scroll: false
-      #embed-resources: false
-

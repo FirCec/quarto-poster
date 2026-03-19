@@ -267,26 +267,17 @@ local function parse_authors(meta)
 
   if is_metalist(a) then
     for _, item in ipairs(a) do
-      if type(item) == "table" and (
-        item.name ~= nil or item.affil ~= nil or item.email ~= nil or
-        item.orcid ~= nil or item.twitter ~= nil or item.github ~= nil or item.website ~= nil
-      ) then
-        local obj = {
-          name = meta_to_string(item.name) ~= "" and meta_to_string(item.name) or meta_to_string(item),
-          affil_nums = as_string_list(item.affil),
-          main = false,
-          email = meta_to_string(item.email),
-          orcid = meta_to_string(item.orcid),
-          twitter = meta_to_string(item.twitter),
-          github = meta_to_string(item.github),
-          website = meta_to_string(item.website)
-        }
+-- WITH THIS:
+      local item_is_rich = is_metamap(item) or (
+        type(item) == "table" and (
+          item.name ~= nil or item.affil ~= nil or
+          item.email ~= nil or item.orcid ~= nil or
+          item.twitter ~= nil or item.github ~= nil or
+          item.website ~= nil
+        )
+      )
 
-        local main_value = meta_to_string(item.main):lower()
-        obj.main = (main_value == "true" or main_value == "yes" or main_value == "1")
-
-        table.insert(authors, obj)
-      elseif is_metamap(item) then
+      if item_is_rich then
         local obj = {
           name = meta_to_string(item.name) ~= "" and meta_to_string(item.name) or meta_to_string(item),
           affil_nums = as_string_list(item.affil),
@@ -760,11 +751,6 @@ local function is_explicit_detail(block)
     and has_class(block, "poster-detail")
 end
 
--- Classification rule:
--- 1) explicit key/resources blocks are extracted
--- 2) explicit poster-support/poster-detail blocks override defaults
--- 3) remaining blocks before key go to support
--- 4) remaining blocks after key go to detail
 local function classify_blocks(blocks)
   local key_block = nil
   local resources_block = nil
@@ -802,35 +788,38 @@ end
 
 -- ---------------------------------------------------------
 -- Main transformation
+-- =========================================================
+-- Lua now produces exactly four sibling regions as $body$.
+-- The outer .poster-layout grid wrapper is owned by
+-- template.html — this keeps structural HTML readable and
+-- ensures screen and print CSS reference the same grid
+-- defined in one place.
 -- ---------------------------------------------------------
 
 function Pandoc(doc)
   local classified = classify_blocks(doc.blocks)
 
-  local header = build_header(doc.meta)
-  local key_region = build_key_region(classified.key_block)
-  local support_region = build_support_region(classified.support_blocks)
-  local detail_region = build_detail_region(classified.detail_blocks)
+  local header          = build_header(doc.meta)
+  local key_region      = build_key_region(classified.key_block)
+  local support_region  = build_support_region(classified.support_blocks)
+  local detail_region   = build_detail_region(classified.detail_blocks)
   local resources_region = build_resources_region(classified.resources_block)
 
   local center_column = pandoc.Div(
-    {
-      key_region,
-      resources_region
-    },
-    pandoc.Attr("", { "poster-center-column" })
+    { key_region, resources_region },
+    pandoc.Attr("poster-center-column", { "poster-center-column" }, {
+      ["role"] = "region",
+      ["aria-label"] = "Key message and resources"
+    })
   )
 
-  local layout = pandoc.Div(
-    {
-      header,
-      support_region,
-      center_column,
-      detail_region
-    },
-    pandoc.Attr("", { "poster-layout" })
-  )
+  -- Return four direct children — template wraps them in .poster-layout
+  doc.blocks = {
+    header,
+    support_region,
+    center_column,
+    detail_region
+  }
 
-  doc.blocks = { layout }
   return doc
 end

@@ -14,19 +14,20 @@
 <link href="example_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="author" content="Firmin C."><meta name="author" content="Another Contributor">
+  <meta name="author" content="Garrick Aden-Buie, Mike Morrison, Brent Thorne, Yihui Xie">
   
 
-  <title>Betterland: A Web-First Scientific Poster for Quarto</title>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+    <meta property="og:title" content="Another Better Scientific Poster Using Quarto and Betterland">
+    
+  <title>Another Better Scientific Poster Using Quarto and Betterland</title>
+
   
   
-
-
     <link rel="stylesheet" href="_extensions/poster/poster-html/poster.css">
     <link rel="stylesheet" href="_extensions/poster/poster-html/poster-print.css">
   
-  </head>
+  
+</head>
 
 <body class="poster poster-html poster--landscape fullcontent quarto-light" style="
         --poster-page-width: 1189mm;
@@ -36,256 +37,272 @@
         --poster-accent: #cc0000;
       ">
 
-    <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-    
-    <main class="content" id="quarto-document-content">
+    <div class="page-layout-custom">  
   
-  <main id="poster-main" class="poster-main" role="main">
+  <main id="poster-main" class="poster-main">
     <div class="poster__wrap">
       <div class="poster__isolate">
         <div class="poster-layout">
-        <div id="poster-header" class="poster-header" aria-label="Poster header" role="banner">
-        <div class="poster-title-group">
-        <h1 class="poster-title">Betterland: A Web-First Scientific Poster for Quarto</h1>
-        <p class="poster-subtitle">An MVP extension for semantic, responsive, and print-feasible academic posters</p>
-        </div>
-        <div class="poster-author-group">
-        <div class="poster-authors">
-        <p>Firmin C.<sup>1</sup></p>
-        </div>
-        <div class="poster-coauthors">
-        <p>Another Contributor<sup>2</sup></p>
-        </div>
-        </div>
-        <div class="poster-affiliation-group">
-        <div class="poster-affiliation-item">
-        <p><sup>1</sup> RPTU Kaiserslautern-Landau</p>
-        </div>
-        <div class="poster-affiliation-item">
-        <p><sup>2</sup> Example Research Lab</p>
-        </div>
-        </div>
-        <div class="poster-contact-group">
-        <div class="poster-contact-line">
-        <p><a href="mailto:firmin@example.com">firmin@example.com</a> · <a href="https://example.com">https://example.com</a> · <a href="https://orcid.org/0000-0000-0000-0000">ORCID: 0000-0000-0000-0000</a> · <a href="https://github.com/firminc">@firminc</a></p>
-        </div>
-        </div>
-        </div>
-        <div id="poster-support-region" class="poster-support-region" aria-label="Support content" role="region">
-        <div class="poster-flow poster-flow--support">
-        <section id="introduction" class="level2">
-        <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-        <p>Scientific posters are usually designed for print and later distributed as PDFs.<br>
-        This often makes them difficult to read on screens, difficult to search, and less adaptable than HTML-based documents.</p>
-        <p>This prototype explores a <strong>web-first poster model</strong> for Quarto, combining: - semantic structure - responsive presentation - print-feasible export - support for common scholarly poster content</p>
-        </section>
-        <section id="contributions" class="level2">
-        <h2 class="anchored" data-anchor-id="contributions">Contributions</h2>
-        <p>This MVP focuses on the most important poster requirements:</p>
-        <ul>
-        <li>semantic header, key-message, support, detail, and resources regions</li>
-        <li>responsive screen layout for web viewing</li>
-        <li>print-feasible A0/A1 output</li>
-        <li>support for text, lists, images, tables, references, and resources</li>
-        <li>an extensible baseline for future scientific-poster components</li>
-        </ul>
-        </section>
-        <section id="methods" class="level2">
-        <h2 class="anchored" data-anchor-id="methods">Methods</h2>
-        <p>The implementation is based on three layers:</p>
-        <ol type="1">
-        <li><strong>Lua transformation</strong> to classify and reorganize content into semantic poster regions<br>
-        </li>
-        <li><strong>HTML template</strong> to provide a clean web-first container and poster variables<br>
-        </li>
-        <li><strong>CSS / print CSS</strong> to create responsive screen layout and print behavior</li>
-        </ol>
-        <p>This keeps the authoring experience close to standard Quarto while introducing poster-specific structure.</p>
-        </section>
-        <section id="implementation" class="level2">
-        <h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
-        <p>The poster extension currently supports:</p>
-        <ul>
-        <li>metadata extraction from YAML</li>
-        <li>automatic header generation</li>
-        <li>explicit <code>.key-message</code> block extraction</li>
-        <li>explicit <code>.resources</code> block extraction</li>
-        <li>default support/detail splitting around the key message</li>
-        <li>semantic region wrappers for accessibility and maintainability</li>
-        </ul>
-        <div class="quarto-figure quarto-figure-center">
-        <figure class="figure">
-        <p><img src="https://via.placeholder.com/800x420.png?text=Workflow+Diagram" class="img-fluid figure-img"></p>
-        <figcaption>Example architecture or workflow diagram</figcaption>
-        </figure>
-        </div>
-        </section>
-        <section id="evaluation" class="level2">
-        <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
-        <p>The MVP was evaluated against the following questions:</p>
-        <ul>
-        <li>Can the poster be meaningfully read in a browser without behaving like a static PDF?</li>
-        <li>Can the same source be printed into a poster-sized output?</li>
-        <li>Can common scientific poster content types be displayed without custom author-side hacks?</li>
-        <li>Does the structure remain extensible enough for future work?</li>
-        </ul>
-        </section>
-        </div>
-        </div>
-        <div class="poster-center-column">
-        <div id="poster-key-region" class="poster-key-region" aria-label="Key message" role="region">
-        <div class="poster-key-main">
-        <p>Main finding goes here, translated into plain english. Emphasize the important words with <strong>bold</strong> or <em>italics</em> if needed.</p>
-        </div>
-        <div class="poster-key-extra">
-        <p>Additional texts and content can be added here if you really want to.</p>
-        </div>
-        </div>
-        <div id="poster-resources-region" class="poster-resources-region" aria-label="Resources" role="region">
-        <div class="poster-resources-content">
-        <div class="poster-resource-row">
-        <div class="poster-resource-item poster-resource-item--qr">
-        <img src="_extensions/poster/poster-html/assets/QR-IMAGE.png" class="qr img-fluid">
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div id="poster-detail-region" class="poster-detail-region" aria-label="Detailed results" role="region">
-        <div class="poster-flow poster-flow--detail">
-        <section id="results" class="level2">
-        <h2 class="anchored" data-anchor-id="results">Results</h2>
-        <p>The current prototype demonstrates a working poster pipeline with a clear region hierarchy and support for core scholarly content.</p>
-        <table class="caption-top table">
-        <thead>
-        <tr class="header">
-        <th>Feature</th>
-        <th>MVP status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="odd">
-        <td>Semantic header</td>
-        <td>Implemented</td>
-        </tr>
-        <tr class="even">
-        <td>Key message extraction</td>
-        <td>Implemented</td>
-        </tr>
-        <tr class="odd">
-        <td>Resources region</td>
-        <td>Implemented</td>
-        </tr>
-        <tr class="even">
-        <td>Responsive screen layout</td>
-        <td>Implemented</td>
-        </tr>
-        <tr class="odd">
-        <td>Print-feasible output</td>
-        <td>Implemented</td>
-        </tr>
-        <tr class="even">
-        <td>Advanced content presets</td>
-        <td>Future work</td>
-        </tr>
-        </tbody>
-        </table>
-        <table class="caption-top table">
-        <thead>
-        <tr class="header">
-        <th>Content type</th>
-        <th>Current support</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="odd">
-        <td>Paragraphs</td>
-        <td>Strong</td>
-        </tr>
-        <tr class="even">
-        <td>Lists</td>
-        <td>Strong</td>
-        </tr>
-        <tr class="odd">
-        <td>Figures</td>
-        <td>Strong</td>
-        </tr>
-        <tr class="even">
-        <td>Tables</td>
-        <td>Strong</td>
-        </tr>
-        <tr class="odd">
-        <td>Code blocks</td>
-        <td>Partial</td>
-        </tr>
-        <tr class="even">
-        <td>Equations</td>
-        <td>Partial</td>
-        </tr>
-        <tr class="odd">
-        <td>Interactive elements</td>
-        <td>Future work</td>
-        </tr>
-        </tbody>
-        </table>
-        </section>
-        <section id="detail-example" class="level2">
-        <h2 class="anchored" data-anchor-id="detail-example">Detail Example</h2>
-        <p>The extension is intended to support richer scientific content over time.<br>
-        For example, compact technical detail can already be included:</p>
-        <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_blocks(blocks):</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    support <span class="op">=</span> []</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    detail <span class="op">=</span> []</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    seen_key <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> block <span class="kw">in</span> blocks:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> block.get(<span class="st">"is_key"</span>):</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            seen_key <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> seen_key:</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            detail.append(block)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            support.append(block)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> support, detail</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-        <p>An example mathematical expression may also appear in technical posters.</p>
-        <p>For instance, the <strong>F1-score</strong> can be written as:</p>
-        <p><span class="math display">\[
-        F_1 = 2 \cdot \frac{\mathrm{Precision} \cdot \mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}}
-        \]</span></p>
-        </section>
-        <section id="discussion" class="level2">
-        <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-        <p>The MVP is already sufficient to demonstrate the project goals, but several limitations remain.</p>
-        <p>Current limitations include:</p>
-        <ul>
-        <li>browser-specific print inconsistencies</li>
-        <li>only partial optimization for code and equations</li>
-        <li>limited component-level presets for figures, callouts, and tables</li>
-        <li>incomplete control over PDF logical reading order</li>
-        </ul>
-        </section>
-        <section id="future-work" class="level2">
-        <h2 class="anchored" data-anchor-id="future-work">Future Work</h2>
-        <p>The most important next steps are:</p>
-        <ul>
-        <li>improved figure and table styling by region</li>
-        <li>callout and note components</li>
-        <li>stronger support for equations and code</li>
-        <li>richer key-region visual elements</li>
-        <li>improved PDF reading-order robustness</li>
-        <li>optional interactive HTML poster features</li>
-        </ul>
-        </section>
-        <section id="references" class="level2 poster-references">
-        <h2 class="poster-references anchored" data-anchor-id="references">References</h2>
-        <ul>
-        <li>Morrison (2019). Better posters.</li>
-        <li>Faulkes (2021). Designing more effective posters.</li>
-        </ul>
-        <div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden">
+          <div id="poster-header" class="poster-header" aria-label="Poster header" role="banner">
+          <div class="poster-title-group">
+          <h1 class="poster-title">Another Better Scientific Poster Using Quarto and Betterland</h1>
+          </div>
+          <div class="poster-author-group">
+          <div class="poster-authors">
+          <p>Garrick Aden-Buie<sup>1</sup></p>
+          </div>
+          <div class="poster-coauthors">
+          <p>Mike Morrison<sup>2</sup>, Brent Thorne<sup>3</sup>, Yihui Xie<sup>4</sup></p>
+          </div>
+          </div>
+          <div class="poster-affiliation-group">
+          <div class="poster-affiliation-item">
+          <p><sup>1</sup> Gerke Lab, Moffitt Cancer Center, Tampa, FL</p>
+          </div>
+          <div class="poster-affiliation-item">
+          <p><sup>2</sup> Michigan State University</p>
+          </div>
+          <div class="poster-affiliation-item">
+          <p><sup>3</sup> Author and maintainer of posterdown</p>
+          </div>
+          <div class="poster-affiliation-item">
+          <p><sup>4</sup> Author of pagedown and much, much more!</p>
+          </div>
+          </div>
+          <div class="poster-contact-group">
+          <div class="poster-contact-line">
+          <p><a href="mailto:garrick@adenbuie.com">garrick@adenbuie.com</a> · <a href="https://github.com/grrrck">@grrrck</a></p>
+          </div>
+          </div>
+          </div>
+          <div id="poster-support-region" class="poster-support-region" aria-label="Support content" role="region">
+          <div class="poster-flow poster-flow--support">
+          <section id="abstract" class="level2">
+          <h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+          <p>In recent years, much research has been devoted to the emulation of DHCP; on the other hand, few have explored the construction of journaling file systems. The inability to effect complexity theory of this has been encouraging. The notion that cryptographers synchronize with game-theoretic configurations is largely adamantly opposed (Fenner 2012).</p>
+          </section>
+          <section id="methods" class="level2">
+          <h2 class="anchored" data-anchor-id="methods">Methods</h2>
+          <ol type="1">
+          <li><p>IPv6 can be made autonomous, concurrent, and client-server</p></li>
+          <li><p>7-month-long trace showing that our design is feasible</p></li>
+          <li><p>Suffix trees and the Ethernet are entirely incompatible.</p></li>
+          <li><p>Model for our methodology:</p>
+          <ul>
+          <li>fiber-optic cables</li>
+          <li>simulated annealing</li>
+          <li>superblocks</li>
+          <li>multicast algorithms</li>
+          </ul></li>
+          </ol>
+          </section>
+          <section id="implementation" class="level2">
+          <h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+          <p>After several days of difficult implementing, we finally have a working implementation of our heuristic. BEVY is composed of a <strong>hacked operating system</strong>, a codebase of <strong>61</strong> Lisp files, and a <strong>hand-optimized compiler</strong>.</p>
+          <div class="quarto-figure quarto-figure-center">
+          <figure class="figure">
+          <p><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Conventional_ETL_Diagram.jpg" class="img-fluid figure-img"></p>
+          <figcaption>Conventional ETL Diagram</figcaption>
+          </figure>
+          </div>
+          </section>
+          <section id="evaluation" class="level2">
+          <h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+          <p>Is it possible to justify having paid little attention to our implementation and experimental setup? Yes, but only in theory.</p>
+          <p>We ran four novel experiments:</p>
+          <ol type="1">
+          <li>Deployed 35 Macintosh SEs underwater and compared our suffix trees accordingly</li>
+          <li>Compared effective time since 1967 on the Sprite, L4 and Multics operating systems</li>
+          <li>Measured <em>tape drive throughput</em> as a function of <em>hard disk space</em> on an <code>Apple ][</code></li>
+          <li>Deployed 36 <code>Apple ][</code>es across the 100-node network and tested again</li>
+          </ol>
+          </section>
+          <section id="results" class="level2">
+          <h2 class="anchored" data-anchor-id="results">Results</h2>
+          <p>In conclusion, in our research we described <strong>BEVY</strong>, a novel heuristic for the analysis of link-level acknowledgements. We proved that simplicity in our heuristic is not a question. Our framework for developing the analysis of thin clients is famously excellent.</p>
+          <p>This text brought to you by SCIgen, an Automatic CS Paper Generator.</p>
+          </section>
+          </div>
+          </div>
+          <div id="poster-center-column" class="poster-center-column" aria-label="Key message and resources" role="region">
+          <div id="poster-key-region" class="poster-key-region" aria-label="Key message" role="region">
+          <div class="poster-key-main">
+          <p><strong>Main finding</strong> goes here, translated into <strong>plain english</strong>. <strong>Emphasize</strong> the important words.</p>
+          </div>
+          <div class="poster-key-extra">
+          <p><em>Additional text and content can be added here if you really want.</em></p>
+          </div>
+          </div>
+          <div id="poster-resources-region" class="poster-resources-region" aria-label="Resources" role="region">
+          <div class="poster-resources-content">
+          <div class="poster-resource-row">
+          <div class="poster-resource-item poster-resource-item--qr">
+          <img src="_extensions/poster/poster-html/assets/QR-IMAGE.png" class="qr img-fluid">
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+          <div id="poster-detail-region" class="poster-detail-region" aria-label="Detailed results" role="region">
+          <div class="poster-flow poster-flow--detail">
+          <section id="extra-tables-figures" class="level2">
+          <h2 class="anchored" data-anchor-id="extra-tables-figures">Extra Tables &amp; Figures</h2>
+          <section id="cars-are-fast" class="level3">
+          <h3 class="anchored" data-anchor-id="cars-are-fast">Cars are fast</h3>
+          <table class="caption-top table">
+          <thead>
+          <tr class="header">
+          <th>variable</th>
+          <th>n</th>
+          <th>mean</th>
+          <th>sd</th>
+          <th>p0</th>
+          <th>p50</th>
+          <th>p100</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="odd">
+          <td>mpg</td>
+          <td>32</td>
+          <td>20.09</td>
+          <td>6.03</td>
+          <td>10.4</td>
+          <td>19.2</td>
+          <td>33.9</td>
+          </tr>
+          <tr class="even">
+          <td>cyl</td>
+          <td>32</td>
+          <td>6.19</td>
+          <td>1.79</td>
+          <td>4</td>
+          <td>6</td>
+          <td>8</td>
+          </tr>
+          <tr class="odd">
+          <td>disp</td>
+          <td>32</td>
+          <td>230.72</td>
+          <td>123.94</td>
+          <td>71.1</td>
+          <td>196.3</td>
+          <td>472</td>
+          </tr>
+          <tr class="even">
+          <td>hp</td>
+          <td>32</td>
+          <td>146.69</td>
+          <td>68.56</td>
+          <td>52</td>
+          <td>123</td>
+          <td>335</td>
+          </tr>
+          <tr class="odd">
+          <td>wt</td>
+          <td>32</td>
+          <td>3.22</td>
+          <td>0.98</td>
+          <td>1.51</td>
+          <td>3.33</td>
+          <td>5.42</td>
+          </tr>
+          </tbody>
+          </table>
+          </section>
+          <section id="flowers-are-pretty" class="level3">
+          <h3 class="anchored" data-anchor-id="flowers-are-pretty">Flowers are pretty</h3>
+          <div id="cdd598d2" class="cell" data-fig-height="2.8" data-fig-width="5" data-execution_count="2">
+          <div class="cell-output cell-output-display">
+          <div>
+          <figure class="figure">
+          <p><img src="example_files/figure-html/cell-3-output-1.png" width="761" height="430" class="figure-img"></p>
+          </figure>
+          </div>
+          </div>
+          </div>
+          </section>
+          <section id="starwars-has-characters" class="level3">
+          <h3 class="anchored" data-anchor-id="starwars-has-characters">Starwars has characters</h3>
+          <table class="caption-top table">
+          <caption>Characters with most appearances in Star Wars movies.</caption>
+          <thead>
+          <tr class="header">
+          <th>name</th>
+          <th>hair_color</th>
+          <th>height</th>
+          <th>species</th>
+          <th>n_films</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="odd">
+          <td>R2-D2</td>
+          <td>NA</td>
+          <td>96</td>
+          <td>Droid</td>
+          <td>7</td>
+          </tr>
+          <tr class="even">
+          <td>C-3PO</td>
+          <td>NA</td>
+          <td>167</td>
+          <td>Droid</td>
+          <td>6</td>
+          </tr>
+          <tr class="odd">
+          <td>Obi-Wan Kenobi</td>
+          <td>auburn</td>
+          <td>182</td>
+          <td>Human</td>
+          <td>6</td>
+          </tr>
+          <tr class="even">
+          <td>Luke Skywalker</td>
+          <td>blond</td>
+          <td>172</td>
+          <td>Human</td>
+          <td>5</td>
+          </tr>
+          <tr class="odd">
+          <td>Leia Organa</td>
+          <td>brown</td>
+          <td>150</td>
+          <td>Human</td>
+          <td>5</td>
+          </tr>
+          <tr class="even">
+          <td>Darth Vader</td>
+          <td>none</td>
+          <td>202</td>
+          <td>Human</td>
+          <td>4</td>
+          </tr>
+          </tbody>
+          </table>
+          </section>
+          <section id="heavy-cars-are-inefficient" class="level3">
+          <h3 class="anchored" data-anchor-id="heavy-cars-are-inefficient">Heavy cars are inefficient</h3>
+          <div id="1a7fa6b4" class="cell" data-fig-height="2.8" data-fig-width="5" data-execution_count="3">
+          <div class="cell-output cell-output-display">
+          <div>
+          <figure class="figure">
+          <p><img src="example_files/figure-html/cell-4-output-1.png" width="761" height="429" class="figure-img"></p>
+          </figure>
+          </div>
+          </div>
+          </div>
+          </section>
+          </section>
+          <section id="references" class="level2 poster-references">
+          <h2 class="poster-references anchored" data-anchor-id="references">References</h2>
+          <p>Fenner, Martin. 2012. “One-click science marketing.” <em>Nature Materials</em> 11 (4): 261–63. <a href="https://doi.org/10.1038/nmat3283" class="uri">https://doi.org/10.1038/nmat3283</a></p>
+          <div id="3ade8a4a-fb1d-4a6c-8409-ac45482d5fc9" class="hidden">
 
-        </div>
-        </section>
-        </div>
-        </div>
+          </div>
+          </section>
+          </div>
+          </div>
         </div>
       </div>
     </div>
@@ -293,5 +310,4 @@
 
   
 
-
-</main></div></body></html>
+</div></body></html>
