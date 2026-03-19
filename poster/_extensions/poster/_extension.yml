@@ -1,28 +1,69 @@
-title: Poster
-author: F. Cecillon
-version: 1.0.0
-quarto-required: ">=1.8.0"
+# =============================================================
+# _extension.yml — Betterland Poster
+# Quarto extension manifest.
+# User declares: format: poster-html
+# =============================================================
+
+title: betterposter
+author: "firmin cecillon"
+version: 0.1.0
+quarto-required: ">=1.4.0"
+
 contributes:
   formats:
     html:
-      template: poster-html/template.html
 
-      # Styles (screen and print)
-      css:
-        - poster-html/poster.css
-        - poster-html/poster-print.css
-
-      # Lua filter for content classification and region building
-      filters:
-        - poster-html/poster.lua
-
-      # Layout: custom tells Quarto not to inject its own
-      # column grid or document-content wrappers.
-      # Our template owns the full page structure.
+      # ----------------------------------------------------------
+      # Layout — bypass Quarto's Bootstrap layout system entirely.
+      # page-layout: custom removes the sidebar, navbar, and the
+      # default content column max-width. Our CSS Grid takes over.
+      # theme: none suppresses Bootstrap CSS injection.
+      # ----------------------------------------------------------
       page-layout: custom
+      theme: none
 
-      # Suppress Quarto defaults that don't apply to posters
+      # ----------------------------------------------------------
+      # Template & styles
+      # ----------------------------------------------------------
+      template: template.html
+
+      css:
+        - poster.css
+        - poster-print.css
+
+      # ----------------------------------------------------------
+      # Lua filter — the only transformation layer
+      # ----------------------------------------------------------
+      filters:
+        - poster.lua
+
+      # ----------------------------------------------------------
+      # Portability — single self-contained HTML file by default.
+      # Author can override with embed-resources: false if needed.
+      # ----------------------------------------------------------
+      embed-resources: true
+
+      # ----------------------------------------------------------
+      # Syntax highlighting
+      # Quarto injects the highlight CSS into $header-includes$
+      # automatically when highlight-style is set here.
+      # ----------------------------------------------------------
+      highlight-style: github
+
+      # ----------------------------------------------------------
+      # Disable Quarto UI chrome that makes no sense on a poster.
+      # ----------------------------------------------------------
       toc: false
       number-sections: false
-      code-fold: false
+      anchor-sections: false
       smooth-scroll: false
+      code-fold: false
+      code-tools: false
+      code-link: false
+
+      # ----------------------------------------------------------
+      # Figure defaults — high-res PNG, transparent background
+      # works well against both white columns and dark hero.
+      # ----------------------------------------------------------
+      fig-format: png
+      fig-dpi: 150

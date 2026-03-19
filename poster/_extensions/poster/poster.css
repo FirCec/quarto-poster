@@ -1,0 +1,834 @@
+/* =========================================================
+   poster.css — Betterland Poster (screen)
+
+   Design philosophy:
+   On large screens (≥1280px) the poster fills the viewport
+   exactly — no scroll, no zoom, true poster experience.
+   On medium screens (1024–1279px) the three-column layout
+   holds but the page may scroll vertically if content is dense.
+   Below 1024px the layout reflows to a single readable column.
+   Below 600px mobile refinements apply.
+
+   Bootstrap is absent (theme: none in _extension.yml).
+   No !important is needed — all rules are scoped under
+   .poster-html which provides sufficient specificity.
+
+   Print rules live entirely in poster-print.css.
+   ========================================================= */
+
+
+/* =========================================================
+   TOKENS
+   Single source of truth for all design values.
+   Author overrides are injected as <style>:root{...}</style>
+   blocks in template.html — they win by cascade order.
+   ========================================================= */
+
+:root {
+
+  /* Colour palette */
+  --poster-primary:   #0b4545;   /* hero background            */
+  --poster-secondary: #008080;   /* links, accents, decorations */
+  --poster-accent:    #cc0000;   /* superscripts, highlights   */
+  --poster-bg:        #ffffff;   /* column background          */
+  --poster-fg:        #111111;   /* body text                  */
+  --poster-muted:     #555555;   /* affiliations, captions     */
+  --poster-border:    rgba(0, 0, 0, 0.08);
+
+  /* Font families — four-font system */
+  --font-body:    "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono:    "Source Code Pro", "SFMono-Regular", Consolas, monospace;
+  /* Billboard uses Source Sans 3 at heavy weight (900) */
+
+  /* Fluid typography — scales with viewport width.
+     clamp(min, preferred, max)
+     preferred is a vw value so size grows with the canvas. */
+  --text:      clamp(10px, 1.0vw,  14px);  /* body text          */
+  --small:     clamp(9px,  0.85vw, 12px);  /* captions, metadata */
+  --h2:        clamp(13px, 1.3vw,  18px);  /* section headings   */
+  --h3:        clamp(11px, 1.1vw,  15px);  /* subsections        */
+  --title:     clamp(18px, 1.8vw,  28px);  /* poster title       */
+  --subtitle:  clamp(11px, 1.1vw,  16px);  /* poster subtitle    */
+  --billboard: clamp(28px, 4.5vw,  72px);  /* main finding       */
+
+  /* Spacing scale — also fluid */
+  --s-1: clamp(4px,  0.45vw,  8px);
+  --s-2: clamp(8px,  0.9vw,  14px);
+  --s-3: clamp(14px, 1.4vw,  22px);
+  --s-4: clamp(20px, 2.0vw,  32px);
+}
+
+
+/* =========================================================
+   BASE RESET
+   Scoped under .poster-html to avoid bleeding into any
+   residual Quarto elements. box-sizing on everything.
+   ========================================================= */
+
+.poster-html *,
+.poster-html *::before,
+.poster-html *::after {
+  box-sizing: border-box;
+}
+
+.poster-html {
+  background: var(--poster-bg);
+  color: var(--poster-fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+}
+
+.poster-html img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.poster-html a {
+  color: var(--poster-secondary);
+  text-decoration: none;
+}
+
+.poster-html a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   VIEWPORT STAGE — DEFAULT (all screen sizes)
+   poster-main fills available width.
+   poster-layout is the CSS Grid container.
+   On large screens we override to 100vh (see below).
+   ========================================================= */
+
+.poster-html .poster-main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.poster-html .poster-layout {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header  center  detail"
+    "support center  detail";
+  column-gap: 0;
+  row-gap: 0;
+}
+
+
+/* =========================================================
+   LARGE SCREEN — VIEWPORT FITTED (≥1280px)
+   The poster IS the viewport. No page scroll.
+   html and body get height:100% + overflow:hidden
+   only at this breakpoint.
+   ========================================================= */
+
+@media (min-width: 1280px) {
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .poster-html {
+    height: 100%;
+  }
+
+  .poster-html .poster-main {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .poster-html .poster-layout {
+    height: 100%;
+  }
+
+  .poster-html .poster-center-column {
+    height: 100%;
+  }
+}
+
+
+/* =========================================================
+   MEDIUM SCREEN — THREE COLUMNS, PAGE MAY SCROLL (1024–1279px)
+   The three-column layout holds but the page scrolls
+   vertically if content is dense. No internal column scroll.
+   ========================================================= */
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+
+  .poster-html .poster-layout {
+    min-height: 100vh;
+  }
+}
+
+
+/* =========================================================
+   HEADER REGION
+   grid-area: header (top of left column)
+   Contains: title group, author group, affiliation group,
+   contact group — all injected via $poster_header$.
+   ========================================================= */
+
+.poster-html .poster-header {
+  grid-area: header;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-2) var(--s-2) var(--s-3);
+  border-right: 1px solid var(--poster-border);
+  border-bottom: 1px solid var(--poster-border);
+  background: var(--poster-bg);
+}
+
+/* Title */
+.poster-html .poster-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.poster-html .poster-title {
+  font-family: var(--font-display);
+  font-size: var(--title);
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0;
+  padding: 0;
+  color: var(--poster-fg);
+  border: none;
+}
+
+.poster-html .poster-subtitle {
+  font-family: var(--font-display);
+  font-size: var(--subtitle);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  opacity: 0.88;
+  color: var(--poster-fg);
+}
+
+/* Authors — main authors bold, co-authors lighter */
+.poster-html .poster-author-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.poster-html .poster-authors p,
+.poster-html .poster-coauthors p {
+  margin: 0;
+  font-size: clamp(10px, 1vw, 14px);
+  line-height: 1.3;
+}
+
+.poster-html .poster-authors p {
+  font-weight: 700;
+}
+
+.poster-html .poster-coauthors p {
+  font-weight: 400;
+  opacity: 0.82;
+}
+
+/* Affiliations */
+.poster-html .poster-affiliation-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.poster-html .poster-affiliation-item p {
+  margin: 0;
+  font-size: var(--small);
+  line-height: 1.2;
+  opacity: 0.75;
+  font-style: italic;
+  color: var(--poster-muted);
+}
+
+/* Contact links */
+.poster-html .poster-contact-group {
+  margin-top: 2px;
+}
+
+.poster-html .poster-contact-line p {
+  margin: 0;
+  font-size: var(--small);
+  line-height: 1.3;
+}
+
+.poster-html .poster-contact-line a {
+  color: var(--poster-secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.poster-html .poster-contact-line a:hover {
+  text-decoration: underline;
+}
+
+/* Superscripts — affiliation numbers */
+.poster-html .poster-header sup,
+.poster-html .poster-affiliation-item sup {
+  color: var(--poster-accent);
+  font-size: 0.7em;
+  font-style: normal;
+}
+
+
+/* =========================================================
+   CENTER COLUMN
+   grid-area: center (full height, middle column)
+   Uses flexbox with three explicit zones:
+     Zone A+B: .poster-key-region (flex:1, upper-biased)
+       Zone A: .poster-key-main  — billboard text
+       Zone B: .poster-key-extras — optional figures/text
+     Zone C: .poster-resources-region (flex:0, lower area)
+   Breathing room throughout — open, spacious, Aden-Buie feel.
+   ========================================================= */
+
+.poster-html .poster-center-column {
+  grid-area: center;
+  min-width: 0;
+  background: var(--poster-primary);
+  color: rgba(255, 255, 255, 0.96);
+  display: flex;
+  flex-direction: column;
+  /* Generous padding — matches Aden-Buie's spacious feel */
+  padding: clamp(24px, 4vh, 56px) clamp(40px, 5.5vw, 88px)
+           clamp(20px, 3vh, 44px) clamp(40px, 5.5vw, 88px);
+}
+
+/* Zone A+B container — takes all available space */
+.poster-html .poster-key-region {
+  flex: 0 0 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* Upper-portion bias — content sits in upper two-thirds,
+     not dead center. Matches Aden-Buie's visual weight. */
+  justify-content: flex-center;
+  gap: 0;
+}
+
+/* Zone A — Billboard main finding */
+.poster-html .poster-key-main {
+  margin-top: clamp(80px, 28vh, 300px);
+}
+
+.poster-html .poster-key-main p {
+  font-family: var(--font-body);
+  font-size: var(--billboard);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.97);
+  letter-spacing: -0.01em;
+}
+
+/* Bold emphasis inside the main finding */
+.poster-html .poster-key-main strong {
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* Zone B — Optional extras (figures, tables, text) */
+.poster-html .poster-key-extras {
+  opacity: 0.92;
+  margin-top: clamp(32px, 6vh, 80px);
+}
+
+.poster-html .poster-key-extras p {
+  font-size: clamp(11px, 1.2vw, 16px);
+  line-height: 1.45;
+  margin: 0 0 var(--s-1) 0;
+  color: rgba(255, 255, 255, 0.90);
+}
+
+.poster-html .poster-key-extras img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: var(--s-1) 0;
+}
+
+/* Zone C — Resources: QR code and logos
+   Fixed height, sits in lower area with breathing room.
+   Not pinned to the very bottom — bottom padding provides
+   the same breathing room as the top padding on Zone A. */
+.poster-html .poster-resources-region {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: var(--s-3);
+  /* bottom breathing room — approximately 5% equivalent */
+  padding-bottom: clamp(20px, 6vh, 80px);
+}
+
+/* Hide resources region when it has no visible children.
+   :has() is supported in all modern browsers. */
+.poster-html .poster-resources-region:not(:has(.poster-resource-item)) {
+  display: none;
+}
+
+.poster-html .poster-resources-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: clamp(10px, 1.5vw, 24px);
+  flex-wrap: wrap;
+}
+
+.poster-html .poster-resource-item {
+  display: flex;
+  align-items: flex-end;
+  line-height: 0;
+}
+
+/* QR code sizing — fluid, scannable at any screen size */
+.poster-html #poster-qrcode img,
+.poster-html #poster-qrcode canvas {
+  width: clamp(80px, 9vw, 160px);
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+/* Logo sizing */
+.poster-html .poster-resource-item--logo img {
+  width: clamp(60px, 7vw, 110px);
+  height: auto;
+  display: block;
+  opacity: 0.92;
+}
+
+
+/* =========================================================
+   LEFT COLUMN — SUPPORT CONTENT
+   grid-area: support (below header, left column)
+   Contains abstract, methods, results, etc.
+   ========================================================= */
+
+.poster-html .poster-left {
+  grid-area: support;
+  min-width: 0;
+  /* No overflow-y: auto — no internal scrolling.
+     Page scrolls as a whole on medium screens. */
+  overflow: visible;
+  padding: var(--s-2) var(--s-2) var(--s-3) var(--s-3);
+  border-right: 1px solid var(--poster-border);
+  background: var(--poster-bg);
+}
+
+
+/* =========================================================
+   RIGHT COLUMN — DETAIL CONTENT
+   grid-area: detail (full height, right column)
+   Contains figures, tables, references, etc.
+   ========================================================= */
+
+.poster-html .poster-right {
+  grid-area: detail;
+  min-width: 0;
+  overflow: visible;
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-2);
+  border-left: 1px solid var(--poster-border);
+  background: var(--poster-bg);
+}
+
+
+/* =========================================================
+   FLOW CONTENT
+   Shared typography rules for .poster-flow--left and
+   .poster-flow--right. Applied via .poster-flow wrapper.
+   ========================================================= */
+
+.poster-html .poster-flow {
+  font-size: var(--text);
+  line-height: 1.45;
+  font-family: var(--font-body);
+}
+
+/* Section headings — h2 with gradient underline decoration
+   inspired by brentthorne. The ::after pseudo-element draws
+   a centered gradient line under each heading.              */
+.poster-html .poster-flow h2 {
+  font-family: var(--font-display);
+  font-size: var(--h2);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: var(--s-2) 0 var(--s-1) 0;
+  padding-bottom: 4px;
+  color: var(--poster-fg);
+  border: none;
+  position: relative;
+}
+
+.poster-html .poster-flow h2::after {
+  content: '';
+  display: block;
+  height: 2px;
+  margin-top: 3px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--poster-primary) 25%,
+    var(--poster-primary) 75%,
+    transparent 100%
+  );
+}
+
+/* First h2 in a column needs less top margin */
+.poster-html .poster-flow h2:first-child {
+  margin-top: 0;
+}
+
+.poster-html .poster-flow h3 {
+  font-family: var(--font-display);
+  font-size: var(--h3);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: var(--s-1) 0 3px 0;
+  padding: 0;
+  color: var(--poster-fg);
+  border: none;
+}
+
+.poster-html .poster-flow p {
+  margin: 2px 0 var(--s-1) 0;
+  font-size: var(--text);
+  line-height: 1.45;
+}
+
+.poster-html .poster-flow ul,
+.poster-html .poster-flow ol {
+  margin: 2px 0 var(--s-1) 14px;
+  padding: 0;
+}
+
+.poster-html .poster-flow li {
+  margin: 1px 0;
+  font-size: var(--text);
+  line-height: 1.4;
+}
+
+/* Section spacing */
+.poster-html .poster-flow section {
+  margin-bottom: var(--s-2);
+}
+
+/* Blockquotes */
+.poster-html .poster-flow blockquote {
+  font-style: italic;
+  padding-left: 1em;
+  border-left: 3px solid var(--poster-secondary);
+  margin-left: 0;
+  opacity: 0.85;
+}
+
+/* Superscripts — citations */
+.poster-html .poster-flow sup {
+  color: var(--poster-accent);
+  font-size: 0.7em;
+  font-style: normal;
+}
+
+
+/* =========================================================
+   FIGURES
+   ========================================================= */
+
+.poster-html .poster-flow figure {
+  margin: var(--s-1) 0;
+}
+
+.poster-html .poster-flow figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 3px;
+}
+
+.poster-html .poster-flow figcaption,
+.poster-html .poster-flow .figure-caption {
+  margin-top: 3px;
+  font-size: var(--small);
+  opacity: 0.75;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.poster-html .poster-flow table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--s-1) 0;
+  font-size: var(--small);
+}
+
+.poster-html .poster-flow thead th {
+  text-align: left;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.18);
+  padding: 2px 5px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-size: var(--small);
+  background: transparent;
+}
+
+.poster-html .poster-flow td {
+  padding: 2px 5px;
+  vertical-align: top;
+  font-size: var(--small);
+  line-height: 1.3;
+  border: none;
+}
+
+.poster-html .poster-flow tbody tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.poster-html .poster-flow tbody tr:nth-child(even) {
+  background: transparent;
+}
+
+/* Table captions */
+.poster-html .poster-flow caption,
+.poster-html .poster-flow .table-caption p {
+  font-size: var(--small);
+  font-style: italic;
+  opacity: 0.75;
+  margin: 2px 0;
+  text-align: left;
+}
+
+
+/* =========================================================
+   CODE
+   ========================================================= */
+
+.poster-html .poster-flow code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  background: rgba(0, 128, 128, 0.10);
+  color: var(--poster-secondary);
+}
+
+.poster-html .poster-flow pre {
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: var(--s-1) var(--s-2);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--poster-border);
+  margin: var(--s-1) 0;
+  font-size: clamp(8px, 0.8vw, 11px);
+  line-height: 1.35;
+}
+
+.poster-html .poster-flow pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Quarto code copy button — not appropriate on a poster */
+.poster-html .code-copy-button {
+  display: none;
+}
+
+/* Quarto anchor links — not appropriate on a poster */
+.poster-html .anchor,
+.poster-html .anchorjs-link {
+  display: none;
+}
+
+
+/* =========================================================
+   MATH
+   ========================================================= */
+
+.poster-html .poster-flow .math.display {
+  display: block;
+  overflow-x: hidden;
+  max-width: 100%;
+  margin: var(--s-1) 0;
+  text-align: center;
+}
+
+.poster-html .poster-flow .math.inline {
+  font-size: inherit;
+}
+
+
+/* =========================================================
+   REFERENCES
+   Smaller type, tighter leading — standard poster convention.
+   ========================================================= */
+
+.poster-html .poster-references p,
+.poster-html .poster-references li {
+  font-size: clamp(8px, 0.8vw, 11px);
+  line-height: 1.3;
+  opacity: 0.85;
+}
+
+.poster-html .poster-references h2 {
+  font-size: var(--h3);
+}
+
+
+/* =========================================================
+   SMALL SCREEN REFLOW — SINGLE COLUMN (<1024px)
+   The three-column grid collapses entirely.
+   Content flows as a single readable document.
+   Reading order (DOM order): header → center → left → right.
+   ========================================================= */
+
+@media (max-width: 1023px) {
+
+  html, body {
+    height: auto;
+    overflow: visible;
+  }
+
+  .poster-html {
+    height: auto;
+  }
+
+  .poster-html .poster-main {
+    height: auto;
+    overflow: visible;
+  }
+
+  .poster-html .poster-layout {
+    display: block;
+    height: auto;
+  }
+
+  /* Restore comfortable reading sizes for small screens */
+  :root {
+    --text:      15px;
+    --small:     13px;
+    --h2:        20px;
+    --h3:        16px;
+    --title:     26px;
+    --subtitle:  16px;
+    --billboard: 34px;
+    --s-1:       6px;
+    --s-2:       12px;
+    --s-3:       20px;
+    --s-4:       28px;
+  }
+
+  /* Header — full width, bottom border instead of right */
+  .poster-html .poster-header {
+    padding: 20px 16px 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--poster-border);
+  }
+
+  /* Center column — full width block, visually distinct */
+  .poster-html .poster-center-column {
+    display: block;
+    padding: 28px 20px;
+    margin: 0;
+  }
+
+  .poster-html .poster-key-region {
+    flex: unset;
+    padding-top: 0;
+    gap: 16px;
+  }
+
+  .poster-html .poster-resources-region {
+    margin-top: 20px;
+    padding-bottom: 0;
+  }
+
+  /* Left and right columns — full width, natural padding */
+  .poster-html .poster-left {
+    padding: 20px 16px;
+    border-right: none;
+    border-top: 1px solid var(--poster-border);
+    overflow: visible;
+  }
+
+  .poster-html .poster-right {
+    padding: 20px 16px;
+    border-left: none;
+    border-top: 1px solid var(--poster-border);
+    overflow: visible;
+  }
+
+  /* Tables readable at small sizes */
+  .poster-html .poster-flow table {
+    font-size: 14px;
+  }
+
+  .poster-html .poster-flow thead th,
+  .poster-html .poster-flow td {
+    font-size: 13px;
+    padding: 4px 6px;
+  }
+
+  /* QR code — fixed size, always scannable */
+  .poster-html #poster-qrcode img,
+  .poster-html #poster-qrcode canvas {
+    width: 100px;
+    height: 100px;
+  }
+
+  .poster-html .poster-resource-item--logo img {
+    width: 120px;
+  }
+
+  /* Show code copy button on small screens
+     where interaction is more expected */
+  .poster-html .code-copy-button {
+    display: block;
+  }
+}
+
+
+/* =========================================================
+   MOBILE REFINEMENTS (<600px)
+   ========================================================= */
+
+@media (max-width: 599px) {
+
+  .poster-html .poster-header,
+  .poster-html .poster-left,
+  .poster-html .poster-right {
+    padding: 16px 12px;
+  }
+
+  .poster-html .poster-center-column {
+    padding: 20px 14px;
+  }
+
+  :root {
+    --billboard: 28px;
+    --title:     22px;
+  }
+}

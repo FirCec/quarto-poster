@@ -1,20 +1,55 @@
 ---
 title: "Another Better Scientific Poster Using Quarto and Betterland"
 
+# =============================================================
+# POSTER METADATA
+# All poster-specific configuration lives under poster:
+# =============================================================
+
 poster:
+
+  # -----------------------------------------------------------
+  # MAIN FINDING — the billboard text in the center column.
+  # Write one clear sentence. Use **bold** for emphasis.
+  # This is the single most important thing you want the
+  # reader to take away. Keep it short and plain-english.
+  # -----------------------------------------------------------
+  main_finding: "**Main finding** goes here, translated into **plain english**. **Emphasize** the important words."
+
+  # -----------------------------------------------------------
+  # QR CODE — provide a URL and the QR code is auto-generated.
+  # Remove or comment out if you do not want a QR code.
+  # -----------------------------------------------------------
+  qrcode: "https://github.com/your-repo/your-poster"
+
+  # -----------------------------------------------------------
+  # AUTHORS
+  # main: true    — displayed prominently with contact info
+  # main: false   — displayed as co-author (name only)
+  # affil         — affiliation number(s), matches affiliations below
+  # orcid, email, github, website — all optional
+  # -----------------------------------------------------------
   authors:
     - name: Garrick Aden-Buie
       affil: [1]
       main: true
       email: garrick@adenbuie.com
       github: grrrck
+      orcid: "0000-0002-7111-0077"
     - name: Mike Morrison
       affil: [2]
+      main: false
     - name: Brent Thorne
       affil: [3]
+      main: false
     - name: Yihui Xie
       affil: [4]
+      main: false
 
+  # -----------------------------------------------------------
+  # AFFILIATIONS
+  # num must match the affil values used in authors above.
+  # -----------------------------------------------------------
   affiliations:
     - num: 1
       address: Gerke Lab, Moffitt Cancer Center, Tampa, FL
@@ -25,12 +60,39 @@ poster:
     - num: 4
       address: Author of pagedown and much, much more!
 
+  # -----------------------------------------------------------
+  # LOGOS — optional. Comment out if not needed.
+  # Provide a path relative to the .qmd file, or a URL.
+  # logo_left  — bottom-left of center column
+  # logo_right — bottom-right of center column
+  # -----------------------------------------------------------
+  # logo_left:  "assets/institution-logo.png"
+  # logo_right: "assets/lab-logo.png"
+
+  # -----------------------------------------------------------
+  # COLOUR OVERRIDES — optional. Comment out to use defaults.
+  # Defaults are defined in poster.css :root block.
+  # -----------------------------------------------------------
+  # primary_color:    "#0b4545"   # hero background
+  # secondary_color:  "#008080"   # links, accents
+  # accent_color:     "#cc0000"   # superscripts, highlights
+  # background_color: "#ffffff"   # column background
+
+# =============================================================
+# FORMAT
+# =============================================================
+
 format:
-  poster-html:
-    orientation: landscape
+  poster-html: default
+
+# =============================================================
+# COMPUTE ENGINE
+# Use jupyter: python3 for Python, or knitr for R.
+# =============================================================
 
 jupyter: python3
 ---
+
 ```{python}
 #| echo: false
 #| include: false
@@ -40,6 +102,17 @@ matplotlib.rcParams['figure.dpi'] = 150
 plt.rcParams['figure.facecolor'] = 'none'
 plt.rcParams['axes.facecolor'] = 'none'
 ```
+
+
+<!-- ==========================================================
+     LEFT COLUMN
+     Place your supporting academic content here.
+     Typical sections: Abstract, Methods, Results, Conclusion.
+     Use ## for section headings, ### for subsections.
+     Standard Markdown — lists, bold, italic, images, math.
+=========================================================== -->
+
+::: {.poster-left}
 
 ## Abstract
 
@@ -96,28 +169,38 @@ for the analysis of link-level acknowledgements. We proved that
 simplicity in our heuristic is not a question. Our framework for
 developing the analysis of thin clients is famously excellent.
 
-This text brought to you by SCIgen, an Automatic CS Paper Generator.
+This text brought to you by [SCIgen](https://pdos.csail.mit.edu/archive/scigen/),
+an Automatic CS Paper Generator.
 
-::: {.key-message}
-**Main finding** goes here, translated into **plain english**.
-**Emphasize** the important words.
-
-*Additional text and content can be added here if you really want.*
 :::
+
+::: {.poster-extras}
+*Additional content goes here if really necessary (figures).*
+:::
+
+<!-- ==========================================================
+     RIGHT COLUMN
+     Place figures, tables, and references here.
+     Use ## for section headings, ### for subsections.
+     Code chunks for computed figures work normally here.
+=========================================================== -->
+
+::: {.poster-right}
 
 ## Extra Tables & Figures
 
 ### Cars are fast
 
-| variable |  n  |  mean  |   sd   |  p0  | p50  | p100 |
-|----------|-----|--------|--------|------|------|------|
-| mpg      | 32  | 20.09  |  6.03  | 10.4 | 19.2 | 33.9 |
-| cyl      | 32  |  6.19  |  1.79  |  4   |  6   |  8   |
-| disp     | 32  | 230.72 | 123.94 | 71.1 | 196.3| 472  |
-| hp       | 32  | 146.69 |  68.56 |  52  | 123  | 335  |
-| wt       | 32  |  3.22  |  0.98  | 1.51 | 3.33 | 5.42 |
+| variable |  n  |  mean  |   sd   |  p0  |  p50  | p100 |
+|----------|-----|--------|--------|------|-------|------|
+| mpg      | 32  | 20.09  |  6.03  | 10.4 | 19.2  | 33.9 |
+| cyl      | 32  |  6.19  |  1.79  |  4   |  6    |  8   |
+| disp     | 32  | 230.72 | 123.94 | 71.1 | 196.3 | 472  |
+| hp       | 32  | 146.69 |  68.56 |  52  | 123   | 335  |
+| wt       | 32  |  3.22  |  0.98  | 1.51 | 3.33  | 5.42 |
 
 ### Flowers are pretty
+
 ```{python}
 #| echo: false
 #| fig-width: 5
@@ -130,7 +213,6 @@ import numpy as np
 data = [
   (1.4,0.2,0),(1.4,0.2,0),(1.3,0.2,0),(1.5,0.2,0),(1.4,0.2,0),
   (1.7,0.4,0),(1.4,0.3,0),(1.5,0.2,0),(1.4,0.2,0),(1.5,0.1,0),
-  (1.5,0.2,0),(1.6,0.2,0),(1.4,0.1,0),(1.1,0.1,0),(1.2,0.2,0),
   (4.7,1.4,1),(4.5,1.5,1),(4.9,1.5,1),(4.0,1.3,1),(4.6,1.5,1),
   (4.5,1.3,1),(4.7,1.6,1),(3.3,1.0,1),(4.6,1.3,1),(3.9,1.4,1),
   (6.0,2.5,2),(5.1,1.9,2),(5.9,2.1,2),(5.6,1.8,2),(5.8,2.2,2),
@@ -160,18 +242,19 @@ plt.tight_layout(pad=0.4)
 
 ### Starwars has characters
 
-| name             | hair_color | height | species | n_films |
-|------------------|------------|--------|---------|---------|
-| R2-D2            | NA         | 96     | Droid   | 7       |
-| C-3PO            | NA         | 167    | Droid   | 6       |
-| Obi-Wan Kenobi   | auburn     | 182    | Human   | 6       |
-| Luke Skywalker   | blond      | 172    | Human   | 5       |
-| Leia Organa      | brown      | 150    | Human   | 5       |
-| Darth Vader      | none       | 202    | Human   | 4       |
+| name           | hair_color | height | species | n_films |
+|----------------|------------|--------|---------|---------|
+| R2-D2          | NA         | 96     | Droid   | 7       |
+| C-3PO          | NA         | 167    | Droid   | 6       |
+| Obi-Wan Kenobi | auburn     | 182    | Human   | 6       |
+| Luke Skywalker | blond      | 172    | Human   | 5       |
+| Leia Organa    | brown      | 150    | Human   | 5       |
+| Darth Vader    | none       | 202    | Human   | 4       |
 
 Table: Characters with most appearances in Star Wars movies.
 
 ### Heavy cars are inefficient
+
 ```{python}
 #| echo: false
 #| fig-width: 5
@@ -181,17 +264,15 @@ Table: Characters with most appearances in Star Wars movies.
 import matplotlib.pyplot as plt
 import numpy as np
 
-wt  = [2.620,2.875,2.320,3.215,3.440,3.460,3.570,3.190,
-       3.150,3.440,3.440,4.070,3.730,3.780,5.250,5.424,
-       5.345,2.200,1.615,1.835,2.465,3.520,3.435,3.840,
-       3.845,1.935,2.140,1.513,3.170,2.770,3.570,2.780]
-mpg = [21.0,21.0,22.8,21.4,18.7,18.1,14.3,24.4,
-       22.8,19.2,17.8,16.4,17.3,15.2,10.4,10.4,
-       14.7,32.4,30.4,33.9,21.5,15.5,15.2,13.3,
-       19.2,27.3,26.0,30.4,15.8,19.7,15.0,21.4]
+wt  = np.array([2.620,2.875,2.320,3.215,3.440,3.460,3.570,3.190,
+                3.150,3.440,3.440,4.070,3.730,3.780,5.250,5.424,
+                5.345,2.200,1.615,1.835,2.465,3.520,3.435,3.840,
+                3.845,1.935,2.140,1.513,3.170,2.770,3.570,2.780])
+mpg = np.array([21.0,21.0,22.8,21.4,18.7,18.1,14.3,24.4,
+                22.8,19.2,17.8,16.4,17.3,15.2,10.4,10.4,
+                14.7,32.4,30.4,33.9,21.5,15.5,15.2,13.3,
+                19.2,27.3,26.0,30.4,15.8,19.7,15.0,21.4])
 
-wt  = np.array(wt)
-mpg = np.array(mpg)
 m, b = np.polyfit(wt, mpg, 1)
 x_line = np.linspace(wt.min(), wt.max(), 100)
 
@@ -200,7 +281,6 @@ ax.scatter(wt, mpg, color='#333333', s=18, alpha=0.8,
            edgecolors='none', zorder=3)
 ax.plot(x_line, m * x_line + b, color='#4393c3',
         linewidth=1.5, zorder=2)
-
 ax.set_xlabel('Weight of the car', fontsize=8)
 ax.set_ylabel('Fuel efficiency (mpg)', fontsize=8)
 ax.set_title('Something something cars', fontsize=8, fontweight='bold')
@@ -218,6 +298,4 @@ plt.tight_layout(pad=0.4)
 Fenner, Martin. 2012. "One-click science marketing." *Nature Materials*
 11 (4): 261–63. <https://doi.org/10.1038/nmat3283>
 
-::: {.resources}
-![](_extensions/poster/poster-html/assets/QR-IMAGE.png){.qr}
 :::

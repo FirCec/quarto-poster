@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"$if(lang)$ lang="$lang$" xml:lang="$lang$"$endif$>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content="Betterland Poster / Quarto" />
+
+  $if(poster.authors)$
+  <meta name="author" content="$for(poster.authors)$$it.name$$sep$, $endfor$" />
+  $endif$
+
+  $if(date-meta)$
+  <meta name="date" content="$date-meta$" />
+  $endif$
+
+  <title>$if(title)$$title$$else$Scientific Poster$endif$</title>
+
+  $if(title)$
+  <meta property="og:title" content="$title$" />
+  $endif$
+
+  $if(subtitle)$
+  <meta property="og:description" content="$subtitle$" />
+  $endif$
+
+  <!-- Google Fonts: Source Sans 3, Source Serif 4, Source Code Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&family=Source+Code+Pro:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- QR code library — loaded only when poster.qrcode is set -->
+  $if(poster.qrcode)$
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  $endif$
+
+  <!-- Math support: MathJax or KaTeX, injected by Quarto when needed -->
+  $if(math)$
+  $math$
+  $endif$
+
+  <!-- Quarto header includes: syntax highlighting CSS and include-in-header content -->
+  $for(header-includes)$
+  $header-includes$
+  $endfor$
+
+  <!-- Poster CSS: screen layout then print overrides -->
+  $for(css)$
+  <link rel="stylesheet" href="$it$" />
+  $endfor$
+
+  <!-- Author colour overrides: injected only when set in YAML under poster: -->
+  $if(poster.primary_color)$
+  <style>:root { --poster-primary: $poster.primary_color$; }</style>
+  $endif$
+  $if(poster.secondary_color)$
+  <style>:root { --poster-secondary: $poster.secondary_color$; }</style>
+  $endif$
+  $if(poster.accent_color)$
+  <style>:root { --poster-accent: $poster.accent_color$; }</style>
+  $endif$
+  $if(poster.background_color)$
+  <style>:root { --poster-bg: $poster.background_color$; }</style>
+  $endif$
+
+</head>
+
+<body class="poster-html poster--landscape">
+
+  $for(include-before)$
+  $include-before$
+  $endfor$
+
+  <main id="poster-main" class="poster-main" role="main" aria-label="Scientific poster">
+    <div class="poster-layout">
+
+      <!-- REGION 1: HEADER — grid-area: header (top of left column)
+           Contains poster title, authors, affiliations, contact info.
+           Title comes directly from the title YAML key.
+           Authors/affiliations/contacts are built by poster.lua
+           and injected via the poster_header metadata variable. -->
+
+      <header class="poster-header" role="banner" aria-label="Poster title and authors">
+
+        <div class="poster-title-group">
+          $if(title)$
+          <h1 class="poster-title">$title$</h1>
+          $endif$
+          $if(subtitle)$
+          <p class="poster-subtitle">$subtitle$</p>
+          $endif$
+        </div>
+
+        $if(poster_header)$
+        $poster_header$
+        $endif$
+
+      </header>
+
+
+      <!-- REGION 2: CENTER COLUMN — grid-area: center (full height, middle)
+           Three zones:
+             Zone A — billboard main finding (from poster.main_finding in YAML)
+             Zone B — optional extras (from .poster-extras div in document)
+             Zone C — QR code and logos (from poster.qrcode / logo YAML keys)
+           Open and breathable — follows Aden-Buie spatial proportions. -->
+
+      <section class="poster-center-column" role="region" aria-label="Main finding">
+
+        <!-- Zones A and B: fills available space, upper-biased positioning -->
+        <div class="poster-key-region">
+
+          <!-- Zone A: billboard text from poster.main_finding YAML key -->
+          $if(poster.main_finding)$
+          <div class="poster-key-main">
+            <p>$poster.main_finding$</p>
+          </div>
+          $endif$
+
+          <!-- Zone B: optional extras from .poster-extras div in document -->
+          $if(poster_extras)$
+          <div class="poster-key-extras">
+            $poster_extras$
+          </div>
+          $endif$
+
+        </div>
+
+        <!-- Zone C: QR code and logos, lower area with breathing room -->
+        <div class="poster-resources-region" role="region" aria-label="QR code and resources">
+          <div class="poster-resources-content">
+
+            $if(poster.logo_left)$
+            <div class="poster-resource-item poster-resource-item--logo">
+              <img src="$poster.logo_left$" class="logo" alt="Left logo" />
+            </div>
+            $endif$
+
+            $if(poster.qrcode)$
+            <div class="poster-resource-item poster-resource-item--qr">
+              <div id="poster-qrcode"></div>
+            </div>
+            $endif$
+
+            $if(poster.logo_right)$
+            <div class="poster-resource-item poster-resource-item--logo">
+              <img src="$poster.logo_right$" class="logo" alt="Right logo" />
+            </div>
+            $endif$
+
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- REGION 3: LEFT COLUMN — grid-area: support (below header, left column)
+           Content from .poster-left div in the author document.
+           Built by poster.lua, injected via poster_left metadata variable.
+           Typical content: abstract, methods, results, conclusion. -->
+
+      <aside class="poster-left" role="region" aria-label="Supporting content">
+        $if(poster_left)$
+        <div class="poster-flow poster-flow--left">
+          $poster_left$
+        </div>
+        $endif$
+      </aside>
+
+
+      <!-- REGION 4: RIGHT COLUMN — grid-area: detail (full height, right column)
+           Content from .poster-right div in the author document.
+           Built by poster.lua, injected via poster_right metadata variable.
+           Typical content: figures, tables, references. -->
+
+      <aside class="poster-right" role="region" aria-label="Detailed results and figures">
+        $if(poster_right)$
+        <div class="poster-flow poster-flow--right">
+          $poster_right$
+        </div>
+        $endif$
+      </aside>
+
+
+    </div>
+  </main>
+
+
+  <!-- QR code generation: runs after DOM is parsed, targets #poster-qrcode above.
+       Double-guarded: checks for element and library before running. -->
+  $if(poster.qrcode)$
+  <script>
+    (function () {
+      var el = document.getElementById("poster-qrcode");
+      if (!el || typeof QRCode === "undefined") return;
+      new QRCode(el, {
+        text:         "$poster.qrcode$",
+        width:        220,
+        height:       220,
+        colorDark:    "#000000",
+        colorLight:   "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    })();
+  </script>
+  $endif$
+
+
+  $for(include-after)$
+  $include-after$
+  $endfor$
+
+</body>
+</html>
