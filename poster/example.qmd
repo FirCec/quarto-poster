@@ -144,7 +144,7 @@ implementation of our heuristic. BEVY is composed of a **hacked
 operating system**, a codebase of **61** Lisp files, and a
 **hand-optimized compiler**.
 
-![Conventional ETL Diagram](https://upload.wikimedia.org/wikipedia/commons/f/fa/Conventional_ETL_Diagram.jpg)
+![Conventional ETL Diagram](../poster/_extensions/poster/assets/etl-diagram.jpg)
 
 ## Evaluation
 

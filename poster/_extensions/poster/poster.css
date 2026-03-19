@@ -135,7 +135,6 @@
 
   html, body {
     height: 100%;
-    overflow: hidden;
     margin: 0;
     padding: 0;
   }
@@ -146,7 +145,6 @@
 
   .poster-html .poster-main {
     height: 100vh;
-    overflow: hidden;
   }
 
   .poster-html .poster-layout {
@@ -314,19 +312,21 @@
 
 /* Zone A+B container — takes all available space */
 .poster-html .poster-key-region {
-  flex: 0 0 auto;
+  flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   /* Upper-portion bias — content sits in upper two-thirds,
      not dead center. Matches Aden-Buie's visual weight. */
-  justify-content: flex-center;
+  justify-content: center;
+  padding-bottom: clamp(60px, 15vh, 180px);
   gap: 0;
 }
 
 /* Zone A — Billboard main finding */
 .poster-html .poster-key-main {
-  margin-top: clamp(80px, 28vh, 300px);
+  /*margin-top: clamp(80px, 28vh, 300px);*/
+  margin-top: 0;
 }
 
 .poster-html .poster-key-main p {
@@ -348,7 +348,7 @@
 /* Zone B — Optional extras (figures, tables, text) */
 .poster-html .poster-key-extras {
   opacity: 0.92;
-  margin-top: clamp(32px, 6vh, 80px);
+  margin-top: clamp(40px, 8vh, 100px);
 }
 
 .poster-html .poster-key-extras p {
@@ -371,7 +371,6 @@
    the same breathing room as the top padding on Zone A. */
 .poster-html .poster-resources-region {
   flex: 0 0 auto;
-  margin-top: auto;
   padding-top: var(--s-3);
   /* bottom breathing room — approximately 5% equivalent */
   padding-bottom: clamp(20px, 6vh, 80px);
