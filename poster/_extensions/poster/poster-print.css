@@ -17,7 +17,7 @@
 
 @page {
   size: A0 landscape;
-  margin: 10mm;
+  margin: 20mm;
 }
 
 
@@ -347,5 +347,11 @@
   .poster-html .anchor,
   .poster-html .anchorjs-link {
     display: none;
+  }
+
+    /* Keep links readable on print */
+  .poster-html .poster-contact-line a {
+    color: inherit;
+    text-decoration: none;
   }
 }

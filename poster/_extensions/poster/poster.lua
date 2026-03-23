@@ -221,6 +221,31 @@ local function build_author_group(authors)
     for _, s in ipairs(sup) do table.insert(name_inlines, s) end
 
     if au.main then
+      -- Inline contact: Name¹ (email · @github)
+      local contact_items = {}
+      if au.email ~= "" then
+        table.insert(contact_items, pandoc.Link(
+          { pandoc.Str(au.email) }, "mailto:" .. au.email
+        ))
+      end
+      if au.github ~= "" then
+        local handle = au.github:gsub("^@", "")
+        table.insert(contact_items, pandoc.Link(
+          { pandoc.Str("@" .. handle) }, "https://github.com/" .. handle
+        ))
+      end
+      if #contact_items > 0 then
+        local sep = { pandoc.Space(), pandoc.Str("·"), pandoc.Space() }
+        table.insert(name_inlines, pandoc.Space())
+        table.insert(name_inlines, pandoc.Str("("))
+        for i, item in ipairs(contact_items) do
+          if i > 1 then
+            for _, s in ipairs(sep) do table.insert(name_inlines, s) end
+          end
+          table.insert(name_inlines, item)
+        end
+        table.insert(name_inlines, pandoc.Str(")"))
+      end
       table.insert(main_inlines, name_inlines)
     else
       table.insert(co_inlines, name_inlines)
@@ -330,8 +355,8 @@ local function build_poster_header(meta)
   local affil_group = build_affiliation_group(affs)
   if affil_group then table.insert(blocks, affil_group) end
 
-  local contact_group = build_contact_group(authors)
-  if contact_group then table.insert(blocks, contact_group) end
+  --- local contact_group = build_contact_group(authors)
+  --- if contact_group then table.insert(blocks, contact_group) end
 
   return blocks
 end
