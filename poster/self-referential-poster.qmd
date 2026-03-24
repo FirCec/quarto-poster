@@ -1,0 +1,218 @@
+---
+title: "Betterland: A Responsive Web-Native Scientific Poster Extension for Quarto"
+
+poster:
+  main_finding: "**Betterland** makes web-native scientific posters from plain Markdown — readable on **any screen**, printable to **A0**, no HTML required."
+
+  qrcode: "https://github.com/FirCec/quarto-poster"
+
+  authors:
+    - name: "Firmin Cecillon"
+      affil: [1]
+      main: true
+      email: "cecillon@rptu.de"
+      github: fircec
+      orcid: "0000-0000-0000-0000"
+
+  affiliations:
+    - num: 1
+      address: "Applied Machine Learning, Fachbereich Informatik, RPTU Kaiserslautern, Deutschland"
+
+format:
+  poster-html: default
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+#| include: false
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+import matplotlib
+matplotlib.rcParams['figure.dpi'] = 150
+plt.rcParams['figure.facecolor'] = 'none'
+plt.rcParams['axes.facecolor'] = 'none'
+```
+
+
+::: {.poster-left}
+
+## Motivation
+
+Academic posters are among the most common formats for sharing
+research, yet most fail basic graphic design principles — even
+award-winning posters are structured like journal articles rather
+than visual communication (Faulkes, 2023). Worse, they are
+distributed as PDFs: fixed-size files that require zooming on
+screens, are inaccessible to screen readers, and cannot reflow
+to different display contexts.
+
+## The Better Poster Concept
+
+Morrison (2019) proposed a three-column landscape layout with the
+main finding in the centre, methods on the left, and figures on
+the right. Empirical evidence supports this: Bentsen & Østergaard
+(2026) found significant advantages for the Better Poster format
+in first impression ($p = 1.64 \times 10^{-6}$) across 103 posters
+at a real scientific conference.
+
+## Methods
+
+Betterland is a Quarto extension with five components:
+
+1. **`_extension.yml`** — format declaration, disables Bootstrap
+2. **`template.html`** — semantic HTML5 skeleton (`<header>`, `<main>`, `<aside>`)
+3. **`poster.lua`** — ~230 line Lua filter, populates five template slots
+4. **`poster.css`** — CSS Grid (`1fr 3fr 1fr`), fluid `clamp()` typography,
+   responsive reflow below 1024px
+5. **`poster-print.css`** — A0 typography and `@page { size: A0 landscape }`
+
+## Key Design Decisions
+
+- **Full methods retained** in left column — informed by Oronje et al. (2024),
+  who found billboard-poster viewers wanted more methodological detail
+- **Semantic HTML5** throughout — following WCAG 2.2 (W3C, 2023),
+  making output more accessible than PDF by default
+- **Breakpoint at 1024px** — boundary between tablet landscape
+  (three-column viable) and portrait (not viable)
+
+## Authoring Experience
+
+The entire poster is written in Markdown and YAML — no HTML or CSS
+required. Content goes into two named zones:
+
+```markdown
+::: {.poster-left}
+## Methods
+## Results
+:::
+
+::: {.poster-right}
+## Figures
+## References
+:::
+```
+
+:::
+
+::: {.poster-extras}
+*Additional content goes here if really necessary (figures).*
+:::
+
+::: {.poster-right}
+
+## Feature Comparison
+
+```{python}
+#| echo: false
+#| fig-width: 5.2
+#| fig-height: 3.8
+#| out-width: "100%"
+
+tools = ['PowerPoint', 'beamerposter', 'posterdown', 'betterposter',
+         'docposter', 'acad-poster', 'Betterland']
+
+features = {
+    'Morrison layout':      [0, 0, 1, 1, 0, 0, 1],
+    'Web/screen first':     [0, 0, 0, 0, 0.5, 1, 1],
+    'Responsive design':    [0, 0, 0, 0, 0, 1, 1],
+    'Literate programming': [0, 0.5, 1, 1, 1, 0, 1],
+    'Multi-language':       [0, 0, 0, 0, 0.5, 0, 1],
+    'QR auto-generation':   [0, 0, 0, 1, 0, 0, 1],
+    'Semantic HTML5':       [0, 0, 0, 0, 0, 0.5, 1],
+    'A0 print support':     [1, 1, 1, 1, 0.5, 0, 1],
+    'Quarto native':        [0, 0, 0, 0, 1, 0, 1],
+    'Open source':          [0, 1, 1, 1, 1, 1, 1],
+}
+feature_names = list(features.keys())
+scores = [sum(features[f][i] for f in feature_names)
+          for i in range(len(tools))]
+colors = ['#cccccc'] * 6 + ['#0b4545']
+
+fig, ax = plt.subplots(figsize=(5.2, 3.8))
+bars = ax.barh(tools, scores, color=colors, edgecolor='white', linewidth=0.5)
+ax.set_xlabel('Features supported (out of 10)', fontsize=8)
+ax.set_xlim(0, 10.5)
+ax.tick_params(labelsize=7)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.set_title('Feature coverage by tool', fontsize=9,
+             fontweight='bold', pad=6)
+for bar, score in zip(bars, scores):
+    ax.text(score + 0.1, bar.get_y() + bar.get_height()/2,
+            f'{score:.0f}' if score == int(score) else f'{score:.1f}',
+            va='center', fontsize=7, color='#333333')
+highlight = mpatches.Patch(color='#0b4545', label='Betterland (this work)')
+ax.legend(handles=[highlight], fontsize=7, loc='lower right', framealpha=0.7)
+plt.tight_layout(pad=0.5)
+```
+
+## Responsive Layout
+
+```{python}
+#| echo: false
+#| fig-width: 5.2
+#| fig-height: 2.4
+#| out-width: "100%"
+
+fig, ax = plt.subplots(figsize=(5.2, 2.4))
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.axis('off')
+ranges = [
+    (0.0,  0.30, '< 1024px\nMobile / tablet portrait',
+     'Single column\nheader → finding\n→ left → right', '#e8f4f8'),
+    (0.33, 0.63, '1024–1279px\nLaptop',
+     'Three columns\nPage scrolls if\ncontent is dense', '#fff3cd'),
+    (0.66, 0.96, '≥ 1280px\nLarge monitor',
+     'Three columns\nFits viewport\nNo scroll needed', '#d4edda'),
+]
+for x0, x1, label_top, label_bot, color in ranges:
+    rect = mpatches.FancyBboxPatch(
+        (x0 + 0.02, 0.10), (x1 - x0 - 0.04), 0.80,
+        boxstyle="round,pad=0.01",
+        facecolor=color, edgecolor='#aaaaaa', linewidth=0.8)
+    ax.add_patch(rect)
+    ax.text((x0 + x1)/2, 0.80, label_top, ha='center', va='center',
+            fontsize=7, fontweight='bold', color='#333333')
+    ax.text((x0 + x1)/2, 0.38, label_bot, ha='center', va='center',
+            fontsize=6.5, color='#555555', linespacing=1.4)
+ax.set_title('Responsive layout breakpoints', fontsize=9,
+             fontweight='bold', pad=4)
+plt.tight_layout(pad=0.3)
+```
+
+## Evaluation
+
+| Goal | Description | Status |
+|------|-------------|--------|
+| G1 | Morrison layout as Quarto extension | ✓ |
+| G2 | Literate programming R and Python | ✓ |
+| G3 | Design grounded in literature | Partial |
+| G4 | Simple YAML and Markdown authoring | ✓ |
+| G5 | Responsive across screen sizes | Partial |
+| G6 | Printable to A0 landscape | ✓ |
+| G7 | More accessible than PDF | Partial |
+| G8 | Self-referential demonstration poster | ✓ |
+
+## References
+
+Bentsen & Østergaard (2026). *J. Cancer Education*, 41, 49–54.
+[doi:10.1007/s13187-025-02622-1](https://doi.org/10.1007/s13187-025-02622-1)
+
+Faulkes (2021). *Better Posters*. Pelagic Publishing.
+
+Faulkes (2023). *Frontiers in Communication*, 8, 1063345.
+[doi:10.3389/fcomm.2023.1063345](https://doi.org/10.3389/fcomm.2023.1063345)
+
+Morrison (2019). *Better Scientific Poster*. OSF.
+[osf.io/ef53g](https://osf.io/ef53g/)
+
+Oronje, Morrison et al. (2024). *Qeios* (preprint).
+[doi:10.32388/p7n5bo.2](https://doi.org/10.32388/p7n5bo.2)
+
+W3C WAI (2023). *WCAG 2.2*.
+[w3.org/TR/WCAG22](https://www.w3.org/TR/WCAG22/)
+
+:::

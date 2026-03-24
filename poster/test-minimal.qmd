@@ -1,0 +1,41 @@
+---
+title: "Betterland: Minimal Content Test"
+
+poster:
+  main_finding: "**This is the main finding** — testing the layout with minimal content."
+
+  qrcode: "https://github.com/FirCec/quarto-poster"
+
+  authors:
+    - name: "Firmin Cecillon"
+      affil: [1]
+      main: true
+      email: "cecillon@rptu.de"
+
+  affiliations:
+    - num: 1
+      address: "RPTU Kaiserslautern, Deutschland"
+
+format:
+  poster-html: default
+---
+
+::: {.poster-left}
+
+## Introduction
+
+This is a minimal test poster with very little content.
+The center column should fill the full viewport height
+regardless of how sparse the side column content is.
+
+:::
+
+
+::: {.poster-right}
+
+## Results
+
+A single short paragraph in the right column.
+White space below this content is expected and correct.
+
+:::

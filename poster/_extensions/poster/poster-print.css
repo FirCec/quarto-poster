@@ -31,12 +31,14 @@
   ------------------------------------------------------- */
 
   html, body {
-    width:      1189mm;
-    height:     841mm;
-    margin:     0;
-    padding:    0;
-    overflow:   hidden;
-    background: #ffffff;
+    width:      100%   !important;
+    height:     100%   !important;
+    min-height: 0      !important;
+    max-height: 100%   !important;
+    margin:     0      !important;
+    padding:    0      !important;
+    overflow:   hidden !important;
+    background: #ffffff !important;
   }
 
   /* -------------------------------------------------------
@@ -45,21 +47,26 @@
      The 10mm @page margin handles the outer breathing room.
   ------------------------------------------------------- */
 
+  .poster-html {
+    min-height: 0    !important;
+    height:     100% !important;
+  }
+
   .poster-html .poster-main {
-    width:    100%;
-    height:   100%;
-    overflow: hidden;
-    margin:   0;
-    padding:  0;
+    width:      100%  !important;
+    height:     100%  !important;
+    min-height: 0     !important;
+    max-height: 100%  !important;
+    overflow:   hidden !important;
+    margin:     0     !important;
+    padding:    0     !important;
   }
 
   .poster-html .poster-layout {
-    width:    100%;
-    height:   100%;
-    overflow: hidden;
-    /* Grid proportions and area names inherited from
-       poster.css — 1fr 3fr 1fr, same named areas.
-       Only override rows to add a third row for resources. */
+    width:      100%  !important;
+    height:     100%  !important;
+    min-height: 0     !important;
+    overflow:   hidden !important;
     grid-template-rows: auto 1fr;
   }
 
@@ -68,6 +75,26 @@
      Content flows naturally on print.
      Author is responsible for not overfilling columns.
   ------------------------------------------------------- */
+  .poster-html .poster-center-column {
+    height:     100%  !important;
+    min-height: 0     !important;
+    overflow:   hidden !important;
+  }
+
+  .poster-html .poster-header {
+    overflow: visible !important;
+    min-height: 0 !important;
+  }
+
+  .poster-html .poster-left {
+    overflow: visible !important;
+    min-height: 0 !important;
+  }
+
+  .poster-html .poster-right {
+    overflow: visible !important;
+    min-height: 0 !important;
+  }
 
   .poster-html .poster-header {
     overflow: visible;
@@ -113,11 +140,14 @@
   ------------------------------------------------------- */
 
   .poster-html .poster-key-region {
+    min-height: 0;
+    overflow: hidden;
     padding-top: 18mm;
     gap:         10mm;
   }
 
   .poster-html .poster-resources-region {
+    flex-shrink: 0;
     padding-top:    6mm;
     padding-bottom: 8mm;
   }
@@ -189,7 +219,7 @@
   /* Billboard */
   .poster-html .poster-key-main p {
     font-size:      98pt;
-    line-height:    1.35;
+    line-height:    1.05;
     letter-spacing: -0.01em;
     margin:         0;
   }

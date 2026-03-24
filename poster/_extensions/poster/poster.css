@@ -97,6 +97,17 @@
   text-decoration: underline;
 }
 
+.poster-html .poster-references a {
+  color: var(--poster-secondary);
+  text-decoration: none;
+  opacity: 1;
+}
+
+.poster-html .poster-references a:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
 
 /* =========================================================
    VIEWPORT STAGE — DEFAULT (all screen sizes)
@@ -134,25 +145,27 @@
 @media (min-width: 1280px) {
 
   html, body {
-    height: 100%;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
   }
 
   .poster-html {
-    height: 100%;
+    min-height: 100vh;
   }
 
   .poster-html .poster-main {
-    height: 100vh;
+    min-height: 100vh;
   }
 
   .poster-html .poster-layout {
-    height: 100%;
+    min-height: 100vh;
+    grid-template-rows: auto 1fr;
   }
 
   .poster-html .poster-center-column {
-    height: 100%;
+    align-self: stretch;
+    min-height: 100vh;
   }
 }
 
@@ -167,6 +180,10 @@
 
   .poster-html .poster-layout {
     min-height: 100vh;
+  }
+    .poster-html .poster-center-column {
+      min-height: 100vh;
+      align-self: stretch;
   }
 }
 
