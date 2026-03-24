@@ -420,6 +420,23 @@ function Pandoc(doc)
     doc.meta.poster_header = pandoc.MetaBlocks(header_blocks)
   end
 
+  -- 0. Process main_finding as Markdown so bold/italic
+  --    markup in YAML renders as proper HTML inlines.
+  --    Without this, **word** appears as literal asterisks.
+  if doc.meta.poster and doc.meta.poster.main_finding then
+    local finding_str = stringify(doc.meta.poster.main_finding)
+    if finding_str ~= "" then
+      local finding_doc = pandoc.read(finding_str, "markdown")
+      if #finding_doc.blocks > 0 then
+        local first = finding_doc.blocks[1]
+        if first.t == "Para" or first.t == "Plain" then
+          doc.meta.poster.main_finding =
+            pandoc.MetaInlines(first.content)
+        end
+      end
+    end
+  end
+
   -- 2. Extract .poster-left content
   local left_blocks = extract_div_by_class(doc.blocks, "poster-left")
   if left_blocks then

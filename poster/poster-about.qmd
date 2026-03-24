@@ -16,7 +16,7 @@ poster:
 
   affiliations:
     - num: 1
-      address: "Applied Machine Learning, Fachbereich Informatik, RPTU Kaiserslautern, Deutschland"
+      address: "Data Science and its Applications, Fachbereich Informatik, RPTU Kaiserslautern"
 
 format:
   poster-html: default
@@ -43,68 +43,55 @@ plt.rcParams['axes.facecolor'] = 'none'
 Academic posters are among the most common formats for sharing
 research, yet most fail basic graphic design principles — even
 award-winning posters are structured like journal articles rather
-than visual communication (Faulkes, 2023). About three-quarters
-use the IMRAD structure common to journal articles, and at least
-thirty percent have no clear reading orientation. Worse, they are
+than visual communication (Faulkes, 2023). Worse, they are
 distributed as PDFs: fixed-size files that require zooming on
 screens, are inaccessible to screen readers, and cannot reflow
-to different display contexts. PDFs are also less searchable and
-harder to reuse than HTML.
+to different display contexts.
 
 ## The Better Poster Concept
 
-Morrison (2019) proposed a three-column landscape layout that
-places the single most important finding in the centre in large
-plain-language text, with supporting methods and results in a left
-column, and supplementary figures and references in a right column.
-A QR code links to the full paper. Empirical evidence supports
-this: Bentsen & Østergaard (2026) found statistically significant
-advantages for the Better Poster format in first impression
-($p = 1.64 \times 10^{-6}$) across 103 posters at a real
-scientific conference, using four criteria assessed by independent
-raters with Kendall's W interrater reliability.
+Morrison (2019) proposed a three-column landscape layout with the
+main finding in the centre, methods on the left, and figures on
+the right. Empirical evidence supports this: Bentsen & Østergaard
+(2026) found significant advantages for the Better Poster format
+in first impression ($p = 1.64 \times 10^{-6}$) across 103 posters
+at a real scientific conference.
 
 ## Methods
 
-Betterland is a Quarto extension with five interconnected
-components:
+Betterland is a Quarto extension with five components:
 
 1. **`_extension.yml`** — format declaration, disables Bootstrap
-   (`theme: none`, `page-layout: custom`)
-2. **`template.html`** — owns the full semantic HTML5 skeleton
-   using `<header>`, `<main>`, `<aside>`, and `<section>`
-3. **`poster.lua`** — ~230 line Lua filter: parses YAML metadata,
-   builds the author header, and extracts the three content zones
-4. **`poster.css`** — CSS Grid (`1fr 3fr 1fr`), fluid `clamp()`
-   typography, responsive reflow below 1024px
-5. **`poster-print.css`** — A0 typography calibrated for viewing
-   distance and `@page { size: A0 landscape }`
-
-The fluid typography system scales font sizes continuously with
-viewport width using the CSS `clamp()` function:
+2. **`template.html`** — semantic HTML5 skeleton (`<header>`, `<main>`, `<aside>`)
+3. **`poster.lua`** — ~230 line Lua filter, populates five template slots
+4. **`poster.css`** — CSS Grid (`1fr 3fr 1fr`), fluid `clamp()` typography,
+   responsive reflow below 1024px
+5. **`poster-print.css`** — A0 typography and `@page { size: A0 landscape }`
 
 $$f(v) = \max(f_{\min},\ \min(f_{\max},\ v \cdot vw))$$
 
 where $f_{\min}$ and $f_{\max}$ are the minimum and maximum font
 sizes and $vw$ is the viewport width coefficient.
 
+Install and render with two commands:
+```bash
+quarto use template FirCec/quarto-poster
+quarto render my-poster.qmd
+```
+
 ## Key Design Decisions
 
-- **Full methods retained** in left column — informed by Oronje
-  et al. (2024), who found billboard-poster viewers wanted more
-  methodological detail than the format typically provides
+- **Full methods retained** in left column — informed by Oronje et al. (2024),
+  who found billboard-poster viewers wanted more methodological detail
 - **Semantic HTML5** throughout — following WCAG 2.2 (W3C, 2023),
-  making output inherently more accessible than PDF
+  making output more accessible than PDF by default
 - **Breakpoint at 1024px** — boundary between tablet landscape
   (three-column viable) and portrait (not viable)
-- **`theme: none`** in Quarto config — eliminates Bootstrap CSS
-  conflict, removes need for `!important` overrides throughout
 
 ## Authoring Experience
 
-The entire poster is written in Markdown and YAML — no HTML or
-CSS knowledge required. The main finding and QR code URL are
-declared in YAML front matter. Content goes into two named zones:
+The entire poster is written in Markdown and YAML — no HTML or CSS
+required. Content goes into two named zones:
 
 ```markdown
 ::: {.poster-left}
@@ -117,9 +104,6 @@ declared in YAML front matter. Content goes into two named zones:
 ## References
 :::
 ```
-
-The extension handles layout, typography, print output, and QR
-code generation automatically via the qrcodejs JavaScript library.
 
 :::
 
@@ -222,17 +206,6 @@ plt.tight_layout(pad=0.3)
 | G6 | Printable to A0 landscape | ✓ |
 | G7 | More accessible than PDF | Partial |
 | G8 | Self-referential demonstration poster | ✓ |
-
-Table: Goal assessment. ✓ = fully achieved, Partial = partially achieved.
-
-## Limitations and Future Work
-
-The current implementation has been tested on a limited set of
-screen sizes. A formal accessibility audit against WCAG 2.2 Level
-AA criteria has not been conducted. Future work could add
-interactive visualisations, which are possible in HTML but
-impossible in PDF, and conduct a formal user study to validate
-the design decisions empirically.
 
 ## References
 

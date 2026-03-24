@@ -1,8 +1,38 @@
-/*-- scss:defaults --*/
+/*
+  custom.scss — Betterland author overrides
+  ==========================================
+  This file is the designated place for custom styling overrides.
+  Loaded after poster.css and poster-print.css, so any rules
+  written here take precedence over the extension defaults.
 
-/* TODO: Customize html appearance by setting SCSS variables */
-/* See https://quarto.org/docs/output-formats/html-themes.html#theme-options */
+  Two ways to customise the poster appearance:
 
-/*-- scss:rules --*/
+  1. YAML colour tokens (recommended for simple changes)
+     Set these under the poster: key in your .qmd front matter:
 
-/* TODO: Provide custom CSS rules */
+       poster:
+         primary_color:   "#0b4545"   # hero panel background
+         secondary_color: "#008080"   # links and accents
+         accent_color:    "#cc0000"   # superscripts
+         background_color: "#ffffff"  # column background
+
+  2. CSS rules here (for advanced overrides)
+     Scope all rules under .poster-html to avoid side effects.
+
+     Example — increase body font size:
+       .poster-html .poster-flow {
+         font-size: 13px;
+       }
+
+     Example — change section heading colour:
+       .poster-html .poster-flow h2 {
+         color: #1a1a6e;
+       }
+
+     Example — change the hero panel background:
+       .poster-html .poster-center-column {
+         background: #1a3a5c;
+       }
+*/
+
+/* Add your custom CSS rules below this line */

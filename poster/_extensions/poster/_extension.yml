@@ -30,6 +30,7 @@ contributes:
       css:
         - poster.css
         - poster-print.css
+        - custom.scss
 
       # ----------------------------------------------------------
       # Lua filter — the only transformation layer

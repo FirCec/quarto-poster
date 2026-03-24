@@ -212,5 +212,50 @@
   $include-after$
   $endfor$
 
+  <!-- Responsive resource repositioning.
+     On mobile (<1024px) the resources region (QR code + logos)
+     moves to after the right column — below references.
+     On desktop it lives inside the center column as designed.
+     Runs after QR code generation so the populated div moves intact. -->
+<script>
+  (function () {
+    var resources = document.querySelector(".poster-resources-region");
+    var layout    = document.querySelector(".poster-layout");
+    var center    = document.querySelector(".poster-center-column");
+    var right     = document.querySelector(".poster-right");
+    if (!resources || !layout || !center || !right) return;
+
+    function reposition() {
+      /* Never reposition during print — print CSS handles layout */
+      if (window.matchMedia("print").matches) return;
+
+      if (window.innerWidth < 1024) {
+        if (resources.parentNode !== layout) {
+          layout.insertBefore(resources, right.nextSibling);
+        }
+      } else {
+        if (resources.parentNode !== center) {
+          center.appendChild(resources);
+        }
+      }
+    }
+
+    /* Also move back to center before printing,
+       and restore after print completes */
+    window.addEventListener("beforeprint", function () {
+      if (resources.parentNode !== center) {
+        center.appendChild(resources);
+      }
+    });
+
+    window.addEventListener("afterprint", function () {
+      reposition();
+    });
+
+    reposition();
+    window.addEventListener("resize", reposition);
+  })();
+</script>
+
 </body>
 </html>

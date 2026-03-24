@@ -14,7 +14,7 @@ poster:
 
   affiliations:
     - num: 1
-      address: "RPTU Kaiserslautern, Deutschland"
+      address: "Data Science and its Applications, Fachbereich Informatik, RPTU Kaiserslautern"
 
 format:
   poster-html: default
