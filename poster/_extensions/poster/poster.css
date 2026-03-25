@@ -332,8 +332,6 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  /* Upper-portion bias — content sits in upper two-thirds,
-     not dead center. Matches Aden-Buie's visual weight. */
   justify-content: center;
   padding-top: clamp(40px, 12vh, 140px);
   padding-bottom: clamp(20px, 5vh, 60px);
@@ -342,7 +340,6 @@
 
 /* Zone A — Billboard main finding */
 .poster-html .poster-key-main {
-  /*margin-top: clamp(80px, 28vh, 300px);*/
   margin-top: 0;
 }
 
@@ -390,7 +387,6 @@
   flex: 0 0 auto;
   padding-top: var(--s-3);
   padding-bottom: clamp(18px, 4vh, 60px);
-  /*margin-bottom: clamp(20px, 5vh, 60px);*/
 }
 
 /* Hide resources region when it has no visible children.
@@ -440,8 +436,6 @@
 .poster-html .poster-left {
   grid-area: support;
   min-width: 0;
-  /* No overflow-y: auto — no internal scrolling.
-     Page scrolls as a whole on medium screens. */
   overflow: visible;
   padding: var(--s-2) var(--s-2) var(--s-3) var(--s-3);
   border-right: 1px solid var(--poster-border);
@@ -782,8 +776,6 @@
     padding: 20px 16px 24px;
     border-top: 1px solid var(--poster-border);
     background: var(--poster-bg);
-    /* On mobile the region has been moved outside the dark
-      center column — restore light background and padding. */
   }
 
   .poster-html .poster-resources-region .poster-resources-content {
